@@ -1,0 +1,28 @@
+///////////////////////////////////////////////
+#ifndef USERINTERFACE_H
+#define USERINTERFACE_H
+///////////////////////////////////////////////
+#include <iostream> //Print PlaySpace
+#include <string> //PlaySpace strings
+#include <vector> //PlaySpace Vectors
+
+namespace UserInterface
+{
+   class PlaySpace
+   {
+      public:
+         void Write_PlaySpace(void);
+      protected:
+         std::string display;
+         size_t height, width;
+
+         void Write_Header(void);
+         void Write_Board(void);
+         void Print_PlaySpace(void);
+         void Clear_Board(void);
+
+      private:
+
+   };
+}
+#endif
