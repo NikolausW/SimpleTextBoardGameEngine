@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////
-#ifndef USERINTERFACE_H
-#define USERINTERFACE_H
+#ifndef USERINTERFACE_HPP
+#define USERINTERFACE_HPP
 ///////////////////////////////////////////////
 #include <iostream> //Print PlaySpace
 #include <string> //PlaySpace strings
@@ -20,9 +20,6 @@ namespace UserInterface
          void Write_Board(void);
          void Print_PlaySpace(void);
          void Clear_Board(void);
-
-      private:
-
    };
 }
 #endif

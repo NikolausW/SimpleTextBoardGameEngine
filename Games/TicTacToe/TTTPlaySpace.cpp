@@ -1,12 +1,12 @@
-#include "TTTPlaySpace.h"
+#include "TTTPlaySpace.hpp"
 
 namespace UserInterface
 {
-  	/****************************************************************************************
-  	Description : Creates a TicTacToe PlaySpace, initializing all needed components 
-  	Returns     : A fully initialized TicTacToe PlaySpace
-  	****************************************************************************************/   
-   TicTacToe::TicTacToe()
+  /****************************************************************************************
+   Description : Creates a TicTacToe PlaySpace, initializing all needed components 
+   Returns     : A fully initialized TicTacToe PlaySpace
+  ****************************************************************************************/   
+  TicTacToe::TicTacToe()
    {
       //Dimensions of PlaySpace   
       height = 15;
@@ -32,10 +32,10 @@ namespace UserInterface
       Print_PlaySpace();
    }
 
-  	/****************************************************************************************
-  	Description : Splits display into substrings the size desired output width and then
-                 prints them out one by one.
-  	****************************************************************************************/
+    /****************************************************************************************
+    Description : Splits display into substrings the size desired output width and then
+                  prints them out one by one.
+    ****************************************************************************************/
    void TicTacToe::Print_PlaySpace()
    {
       std::string line;
@@ -46,10 +46,10 @@ namespace UserInterface
       }
    }
 
-  	/****************************************************************************************
-  	Description : Writes the first two lines of display which show the player names and 
+     /****************************************************************************************
+     Description : Writes the first two lines of display which show the player names and 
                  their scores
-  	****************************************************************************************/
+     ****************************************************************************************/
    void TicTacToe::Write_Header()
    {
       std::string P1 = "Steve",
@@ -65,10 +65,10 @@ namespace UserInterface
       display.replace(score2_start, Player2Score.length(), Player2Score);
    }
 
-  	/****************************************************************************************
-  	Description : Writes the Tic Tac Toe board to display and then writes Blanks to all
+     /****************************************************************************************
+     Description : Writes the Tic Tac Toe board to display and then writes Blanks to all
                  squares
-  	****************************************************************************************/
+     ****************************************************************************************/
    void TicTacToe::Write_Board()
    {
       size_t horizontal1 = (6 * width) + 12 - 1,
@@ -85,9 +85,9 @@ namespace UserInterface
       Clear_Board();
    }
 
-  	/****************************************************************************************
-  	Description : Sets up the circle vector with the 3 strings that make up a circle piece
-  	****************************************************************************************/
+     /****************************************************************************************
+     Description : Sets up the circle vector with the 3 strings that make up a circle piece
+     ****************************************************************************************/
    void TicTacToe::setupCircle()
    {
       circle.resize(3);
@@ -96,9 +96,9 @@ namespace UserInterface
       circle[2] = "\\ /";
    }
 
-  	/****************************************************************************************
-  	Description : Sets up the cross vector with the 3 strings that make up a cross piece
-  	****************************************************************************************/
+     /****************************************************************************************
+     Description : Sets up the cross vector with the 3 strings that make up a cross piece
+     ****************************************************************************************/
    void TicTacToe::setupCross()
    {
       cross.resize(3);
@@ -107,9 +107,9 @@ namespace UserInterface
       cross[2] = "/ \\";
    }
 
-  	/****************************************************************************************
-  	Description : Writes a Blank piece to every square on the Tic Tac Toe board
-  	****************************************************************************************/
+     /****************************************************************************************
+     Description : Writes a Blank piece to every square on the Tic Tac Toe board
+     ****************************************************************************************/
    void TicTacToe::Clear_Board()
    {
       for(int i = 1; i <= 9; i++)
@@ -118,11 +118,11 @@ namespace UserInterface
       }
    }
 
-  	/****************************************************************************************
-  	Parameters  : int square - the Tic Tac Toe board square to be written to
-  	Description : Places the square number in the upper left of the provided square and then 
+     /****************************************************************************************
+     Parameters  : int square - the Tic Tac Toe board square to be written to
+     Description : Places the square number in the upper left of the provided square and then 
                  fills the rest of the square with whitespace
-  	****************************************************************************************/
+     ****************************************************************************************/
    void TicTacToe::Write_Blank(int square)
    {
       size_t coordinate = Get_Coordinate(square);
@@ -133,10 +133,10 @@ namespace UserInterface
       display.replace(coordinate + (width * 2), blank.length(), blank);
    }
 
-  	/****************************************************************************************
-  	Parameters  : int square - the Tic Tac Toe board square to be written to
-  	Description : Writes the elements of cross to the given square of the Tic Tac Toe board
-  	****************************************************************************************/   
+     /****************************************************************************************
+     Parameters  : int square - the Tic Tac Toe board square to be written to
+     Description : Writes the elements of cross to the given square of the Tic Tac Toe board
+     ****************************************************************************************/   
    void TicTacToe::Write_Cross(int square)
    {
       size_t coordinate = Get_Coordinate(square);
@@ -147,10 +147,10 @@ namespace UserInterface
       }
    }
 
-  	/****************************************************************************************
-  	Parameters  : int square - the Tic Tac Toe board square to be written to
-  	Description : Writes the elements of circle to the given square of the Tic Tac Toe board
-  	****************************************************************************************/   
+     /****************************************************************************************
+     Parameters  : int square - the Tic Tac Toe board square to be written to
+     Description : Writes the elements of circle to the given square of the Tic Tac Toe board
+     ****************************************************************************************/   
    void TicTacToe::Write_Circle(int square)
    {
       size_t coordinate = Get_Coordinate(square);
@@ -161,10 +161,10 @@ namespace UserInterface
       }  
    }
 
-  	/****************************************************************************************
-  	Parameters  : bool available - If the redo option is available
-  	Description : If available writes redo to display, else writes whitespace to the location
-  	****************************************************************************************/
+     /****************************************************************************************
+     Parameters  : bool available - If the redo option is available
+     Description : If available writes redo to display, else writes whitespace to the location
+     ****************************************************************************************/
    void TicTacToe::Write_Redo(bool available)
    {
       size_t coordinate = (10 * width) + 26 - 1;
@@ -179,10 +179,10 @@ namespace UserInterface
       }    
    }
 
-  	/****************************************************************************************
-  	Parameters  : bool available - If the undo option is available
-  	Description : If available writes undo to display, else writes whitespace to the location
-  	****************************************************************************************/
+     /****************************************************************************************
+     Parameters  : bool available - If the undo option is available
+     Description : If available writes undo to display, else writes whitespace to the location
+     ****************************************************************************************/
    void TicTacToe::Write_Undo(bool available)
    {
       size_t coordinate = (11 * width) + 26 - 1;
@@ -197,12 +197,12 @@ namespace UserInterface
       }
    }
 
-  	/****************************************************************************************
-  	Parameters  : int square - the Tic Tac Toe board square being requested
-  	Description : Given square calculates the coordinate of said square in display
+     /****************************************************************************************
+     Parameters  : int square - the Tic Tac Toe board square being requested
+     Description : Given square calculates the coordinate of said square in display
    Formula     : ((Row - 1) * width) + column - 1
-  	Returns     : size_t coordinate - the location within display for the given square
-  	****************************************************************************************/
+     Returns     : size_t coordinate - the location within display for the given square
+     ****************************************************************************************/
    size_t TicTacToe::Get_Coordinate(int square)
    {
       switch(square)
