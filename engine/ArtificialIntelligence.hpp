@@ -5,7 +5,7 @@
 
 namespace GamePlay
 {
-  class ai
+  class AI
   {
     virtual int AI_Turn(void) = 0;
   };

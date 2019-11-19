@@ -6,7 +6,6 @@
 #include <string> //Setup Dialog
 #include "Dialog.hpp" //Setup Dialog
 #include "GamePlay.hpp" //Game Pointer
-#include "Players.hpp" //Players Vector
 
 class InstanceManager
 {
