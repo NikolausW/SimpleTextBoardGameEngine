@@ -2,21 +2,25 @@
 #ifndef DIALOG_HPP
 #define DIALOG_HPP
 ///////////////////////////////////////////////
-#include "GamePlay.hpp"
+#include "Player.hpp"
+
 
 namespace Dialog
 {
   void Welcome(void);
-  GamePlay::Game* Game_Select(void);
+  void Game_Select(void);
   bool Play_Again(void);
   void Thanks(void);
 
-  class GamePlay_Dialog
+  class Dialog
   {
-    void Player_Select(int numPlayers);
-    void Player_Setup(GamePlay::Player* newPlayer);
-    void Turn_Prompt(void); //This needs to be fleshed out
-    bool virtual Validate_Input(void) = 0;
+    public:
+      virtual void Player_Select(int numPlayers);
+      virtual void Player_Setup(GamePlay::Player* newPlayer);
+      virtual char Turn_Prompt(bool bad_input); 
+      virtual bool Again_Prompt(void);
+      virtual void Round_Winner(std::string Name);
+      virtual void Tie(void);
   };
 }
 

@@ -12,6 +12,7 @@ namespace UserInterface
    {
       public:
          void Write_PlaySpace(void);
+         void New_Game(void);
       protected:
          std::string display;
          size_t height, width;

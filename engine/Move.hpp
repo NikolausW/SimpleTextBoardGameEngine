@@ -1,0 +1,14 @@
+///////////////////////////////////////////////
+#ifndef MOVE_HPP
+#define MOVE_HPP
+///////////////////////////////////////////////
+
+namespace GamePlay
+{
+  struct Move
+  {
+    int target_square;
+  };
+}
+
+#endif
