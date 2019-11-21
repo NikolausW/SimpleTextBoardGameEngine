@@ -38,11 +38,9 @@ namespace UserInterface
     ****************************************************************************************/
    void TicTacToe::Print_PlaySpace()
    {
-      std::string line;
       for(size_t i = 0; i < display.length(); i+= (size_t)width)
       {
-         line = display.substr(i, (size_t)width);
-         std::cout << line << std::endl;
+         std::cout << display.substr(i, (size_t)width) << std::endl;
       }
    }
 

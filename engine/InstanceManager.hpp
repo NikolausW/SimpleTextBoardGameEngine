@@ -4,7 +4,7 @@
 ///////////////////////////////////////////////
 #include <vector> //Vector of Players
 #include <string> //Setup Dialog
-#include "Dialog.hpp" //Setup Dialog
+#include "Dialog.hpp" //Setup Dialogshrug
 #include "GamePlay.hpp" //Game Pointer
 
 class InstanceManager
@@ -15,8 +15,8 @@ class InstanceManager
   private:
     std::vector<GamePlay::Player> PlayerList;
     GamePlay::Game* CurrentGame;
+    Dialog::Dialog* Dialog;
 
-    void Game_Select(void);
     void Different_Game(void);
     void Exit(void);
 };

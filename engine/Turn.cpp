@@ -9,11 +9,6 @@ int Turn::AI(void)
 
   int Turn::Player(void)
   {
-     char input = dialog->Turn_Prompt(false);
-     while(!Valid_Input(input))
-     {
-       input = dialog->Turn_Prompt(true);
-     }
-     return input;
+    //return dialog->Receive_Input()
   }
 }
