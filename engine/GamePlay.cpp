@@ -48,7 +48,8 @@ namespace GamePlay
     {
       dialog->Tie();
     }
-    Play_Again(dialog->Again_Prompt());
+    std::cout << "Would you like to play again?" << std::endl;
+    Play_Again(dialog.YesNo());
   }
 
   void Game::Play_Again(bool again)
@@ -56,11 +57,12 @@ namespace GamePlay
     if(again)
     {
       Reset();
-    }
-    else
-    {
-      //delete this;
     }    
+  }
+
+  void Player_Select::Player_Select(int numPlayers)
+  {
+
   }
 }
 

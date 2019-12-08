@@ -2,7 +2,7 @@
 
 namespace GamePlay
 {
-int Turn::AI(void)
+  int Turn::AI(void)
   {
     return ai->Turn();
   }

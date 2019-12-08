@@ -2,10 +2,11 @@
 #ifndef DIALOG_HPP
 #define DIALOG_HPP
 ///////////////////////////////////////////////
-#include "Player.hpp"
-//#include "GamePlay.hpp"
+//#include "Player.hpp"
+#include "GamePlay.hpp"
 #include <string>
 #include <iostream>
+#include <vector>
 
 
 namespace Dialog
@@ -14,24 +15,63 @@ namespace Dialog
   {
     public:
       virtual void Prompt(size_t width, std::string str);
-      virtual std::string Receive_Input(size_t length);
-      virtual bool Validate_Input(std::string input) = 0;
-      virtual bool YesNo(void);
+      Yes_No* YesNo;
+      virtual void Clear_Screen(void);
+    private:    
   };
 
   class Instance : public Dialog
   {
-    //Need to include strings for Welcome, Play_Again, and Thank you, Prompt and YesNo
+    //Need to include strings for Welcome, Play_Again, and Thank you 
     public:
-     // virtual GamePlay::Game* Game_Select(void);
+      Instance();
+      Game_Select gameSelect;
+      std::string welcome,
+                  thankYou;
   };
 
-  class Game : public Dialog
+  class Option_Select
   {
-    //Need to include strings for Turn and Again Prompt, Round Winner, and Round Tie
+    public:    
+      virtual Option* Select(void); //Kicks off below methods and returns user selected option
+    protected:
+      int Input_Length;
+      std::vector<Option> List; //List of Options to be selected from
+
+      virtual void Print_List(void); //Prints Options
+      virtual std::string Generate_Option_String(Option* option); //Constructs the strings that print list will print 
+      virtual std::string Take_Input(void); //Simply takes the input from user
+      virtual bool Validate_Input(std::string input); //Validates received input
+      virtual void Generate_List(void) = 0;
+  };
+
+  class Yes_No : public Option_Select
+  {
     public:
-      virtual void Player_Select(int numPlayers);
-      virtual void Player_Setup(GamePlay::Player* newPlayer);
+      static Yes_No* option_select();
+    protected:
+      void Print_List(void);
+      std::string Generate_Option_String(Option* option);
+      void Generate_List(void);
+    private:
+      Yes_No();
+      static Yes_No* Instance;
+  };
+
+  class Option
+  {
+    public:
+      std::string Name,
+                  Required_Input;
+      virtual bool Conditional(void);      
+  };
+
+  class YN_Option : public Option
+  {
+    public:
+      YN_Option(bool YN);
+      bool On_Select(); //yesno
+      bool selection;
   };
 }
 
