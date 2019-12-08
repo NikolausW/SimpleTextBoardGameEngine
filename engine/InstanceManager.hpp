@@ -15,7 +15,7 @@ class InstanceManager
   private:
     std::vector<GamePlay::Player> playerlist;
     GamePlay::Game* currentgame;
-    Game_Select gameselect;
+    Game_Select gameselect; //Option Select for picking game to be played
     Dialog::Instance dialog;
 
     void Different_Game(void);

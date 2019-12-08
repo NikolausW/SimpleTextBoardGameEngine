@@ -60,9 +60,12 @@ namespace GamePlay
     }    
   }
 
-  void Player_Select::Player_Select(int numPlayers)
+  Player_Select::Player_Select(int numPlayers)
   {
-
+    for(int i = numPlayers; i > 0; i--)
+    {
+      
+    }
   }
 }
 

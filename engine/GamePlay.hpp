@@ -45,7 +45,7 @@ namespace GamePlay
     //Need to include strings for Turn and Again Prompt, Round Winner, and Round Tie
     public:  
       Player_Select PlayerSelect; 
-      virtual void Player_Setup(GamePlay::Player* newPlayer); //calls the player constructor returning a new player object
+      //virtual void Player_Setup(void); //calls the player constructor returnin a new player object
   };
 
   class Player_Select : Dialog::Option_Select
