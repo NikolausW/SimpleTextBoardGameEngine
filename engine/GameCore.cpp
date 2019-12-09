@@ -1,6 +1,6 @@
-#include "GamePlay.hpp"
+#include "GameCore.hpp"
 
-namespace GamePlay
+namespace GameCore
 {
   void Game::Game_Loop(void)
   {
@@ -40,16 +40,16 @@ namespace GamePlay
   {
     if(Round_Won())
     {
-      Player* winner = players[Player_X_Turn()];
-      winner->Score++;
+      Option::Player* winner = players[Player_X_Turn()];
+      winner->score++;
       //dialog->Prompt(); WINNER ANNOUNCEMENT
     }
     else
     {
-      dialog->Tie();
+      //dialog prompt tie CATS GAME
     }
-    std::cout << "Would you like to play again?" << std::endl;
-    Play_Again(dialog.YesNo());
+    std::cout << "Would you like to play again?" << std::endl; //Change this to a prompt
+    //Play_Again(dialog.YesNo()); Need to figure out reference to YesNo
   }
 
   void Game::Play_Again(bool again)
@@ -60,13 +60,16 @@ namespace GamePlay
     }    
   }
 
-  Player_Select::Player_Select(int numPlayers)
+
+  //PLAYSPACE GOES HERE
+
+  int Turn::AI(void)
   {
-    for(int i = numPlayers; i > 0; i--)
-    {
-      
-    }
+    return ai->Turn();
+  }
+
+  int Turn::Player(void)
+  {
+    //return dialog->Receive_Input()
   }
 }
-
-
