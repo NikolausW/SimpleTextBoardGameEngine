@@ -1,8 +1,8 @@
 #include "GameCore.hpp"
 
-namespace Game
+namespace GameCore
 {
-  void Base::Game_Loop(void)
+  void Game::Game_Loop(void)
   {
     while(!Round_Over())
     {
@@ -13,7 +13,7 @@ namespace Game
     Round_End();  
   }
 
-  bool Base::Round_Over(void)
+  bool Game::Round_Over(void)
   {
     if(Round_Won() || Round_Tie())
     {
@@ -22,7 +22,7 @@ namespace Game
     return false;  
   }
 
-  Move Base::Execute_Turn(void)  // this should return a move
+  int Game::Execute_Turn(void)
   {
     if(players[Player_X_Turn()]->CPU)
     {
@@ -31,16 +31,16 @@ namespace Game
     return turn->Player();
   }
 
-  size_t Base::Player_X_Turn(void)
+  size_t Game::Player_X_Turn(void)
   {
     return turn_number % num_players;
   }
 
-  void Base::Round_End(void)
+  void Game::Round_End(void)
   {
     if(Round_Won())
     {
-      Player* winner = players[Player_X_Turn()];
+      Option::Player* winner = players[Player_X_Turn()];
       winner->score++;
       //dialog->Prompt(); WINNER ANNOUNCEMENT
     }
@@ -48,15 +48,28 @@ namespace Game
     {
       //dialog prompt tie CATS GAME
     }
-    //std::cout << "Would you like to play again?" << std::endl; //Change this to a prompt
+    std::cout << "Would you like to play again?" << std::endl; //Change this to a prompt
     //Play_Again(dialog.YesNo()); Need to figure out reference to YesNo
   }
 
-  void Base::Play_Again(bool again)
+  void Game::Play_Again(bool again)
   {
     if(again)
     {
       Reset();
     }    
+  }
+
+
+  //PLAYSPACE GOES HERE
+
+  int Turn::AI(void)
+  {
+    return ai->Turn();
+  }
+
+  int Turn::Player(void)
+  {
+    //return dialog->Receive_Input()
   }
 }
