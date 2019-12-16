@@ -36,21 +36,23 @@ namespace Game
 
   class PlaySpace 
   {
-    enum Pieces{}; //need to find a better place for this
+    
     public:
       PlaySpace();
+      enum Pieces{};
+      enum Locations{Undo, Redo};
       virtual void Setup_Display(void); // Writes Header and Board and then Prints Playspace
       virtual void Print_PlaySpace(void);
       virtual void New_Game(void) = 0; //This might not need to exist?
       virtual void Write_UndoRedo(bool un, bool re); //Writes or clears undo redo instructions
-      virtual void Write_Piece(size_t coordinate, Pieces piece) = 0;
+      virtual void Write_Piece(Locations location, Pieces piece) = 0;
     protected:
       std::string display,
                   redo,
                   undo,
                   removeUndoRedo;
       size_t height, width;
-      enum Locations{Redo, Undo};
+      
 
       virtual void Write_Header(void) = 0;
       virtual void Write_Board(void) = 0;
