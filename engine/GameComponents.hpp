@@ -29,30 +29,33 @@ namespace Game
   {
     public:
       virtual Move* Turn(void) = 0; 
+    protected:
+      virtual Move* Either(Move a, Move b); //Need to implement
+      virtual Move* Open_Space(void); //Need to implement
   };
 
   class PlaySpace 
   {
+    enum Pieces{}; //need to find a better place for this
     public:
       PlaySpace();
       virtual void Setup_Display(void); // Writes Header and Board and then Prints Playspace
       virtual void Print_PlaySpace(void);
       virtual void New_Game(void) = 0; //This might not need to exist?
       virtual void Write_UndoRedo(bool un, bool re); //Writes or clears undo redo instructions
+      virtual void Write_Piece(size_t coordinate, Pieces piece) = 0;
     protected:
       std::string display,
                   redo,
                   undo,
                   removeUndoRedo;
       size_t height, width;
-      enum Pieces{};
       enum Locations{Redo, Undo};
 
       virtual void Write_Header(void) = 0;
       virtual void Write_Board(void) = 0;
 
       virtual void Clear_Board(void) = 0;
-      virtual void Write_Piece(size_t coordinate, Pieces piece) = 0;
       virtual size_t Get_Coordinate(Locations location) = 0;
   };
 

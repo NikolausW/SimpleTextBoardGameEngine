@@ -21,7 +21,7 @@ namespace Game
     return false;  
   }
 
-  void Base::Execute_Turn()  // this should return a move
+  void Base::Execute_Turn() 
   {
     if(players[Player_X_Turn()]->CPU)
     {
@@ -51,7 +51,7 @@ namespace Game
     //Play_Again(dialog.YesNo()); Need to figure out reference to YesNo
   }
 
-  void Base::Play_Again(bool again)
+  void Base::Play_Again(bool again) //REFACTOR THIS
   {
     if(again)
     {

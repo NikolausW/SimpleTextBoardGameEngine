@@ -85,7 +85,7 @@ namespace Game
     score = 0;
   }
 
-  Player* newPlayer::On_Select()
+  Player* newPlayer::On_Select() //THIS IS TRASH. FIX IT
   { 
     Player* empty;
     return empty;
@@ -119,8 +119,4 @@ namespace Game
     Round_Winner = "";
     Round_Tie = "";
   }
-
-
-
-
 }
