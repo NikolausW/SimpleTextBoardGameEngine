@@ -6,9 +6,8 @@ namespace Game
   {
     while(!Round_Over())
     {
-      playspace->Write_PlaySpace();
+      playspace->Print_PlaySpace();
       Execute_Turn();      
-      Process_Move();
     }
     Round_End();  
   }
@@ -22,13 +21,13 @@ namespace Game
     return false;  
   }
 
-  Move Base::Execute_Turn(void)  // this should return a move
+  void Base::Execute_Turn()  // this should return a move
   {
     if(players[Player_X_Turn()]->CPU)
     {
-      return turn->AI();
+      Process_Move(turn->AI());
     }    
-    return turn->Player();
+    Process_Move(turn->Player());
   }
 
   size_t Base::Player_X_Turn(void)

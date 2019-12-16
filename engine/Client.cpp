@@ -11,7 +11,7 @@ namespace Client
   void Instance::Instance_Loop()
   {
     dialog.Prompt(dialog.welcome.length(), dialog.welcome);
-    currentgame = dialog.gameselect->Select()->On_Select(); //Need to create method for base option probably?
+    currentgame = dialog.gameselect->Select()->On_Select();
 
     while(currentgame)
     {
@@ -24,7 +24,7 @@ namespace Client
   void Instance::Different_Game()
   {
     currentgame = NULL;
-    std::cout << "Would you like to play another game?" << std::endl;
+    std::cout << "Would you like to play another game?" << std::endl; //replace with dialog
     if(dialog.YesNo->Select())
     {
       currentgame = dialog.gameselect->Select()->On_Select();
@@ -33,14 +33,14 @@ namespace Client
 
   void Instance::Exit()
   {
-    std::cout << dialog.thankYou << std::endl;
+    std::cout << dialog.thankYou << std::endl; //replace with prompt
   }
 
   Client_Dialog::Client_Dialog()
   {
     gameselect = Game_Select::option_select();
-    welcome = "Welcome";
-    thankYou = "Thank you for playing!";
+    welcome = "Welcome"; //ascii art replacement
+    thankYou = "Thank you for playing!"; //ascii art replacement
   };
 
   Game_Select* Game_Select::option_select()
@@ -62,9 +62,9 @@ namespace Client
     return selection;
   };
 
-  void Generate_List(void)
+  void Game_Select::Generate_List(void)
   {
-    //List = GameList List;
+    Options = Game::PopulateGameList();
   }
 
   Game_Select::Game_Select()

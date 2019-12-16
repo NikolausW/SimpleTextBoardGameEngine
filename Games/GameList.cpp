@@ -2,14 +2,21 @@
 
 namespace Game
 {
-  Option::Option(int number, Base* game)  
+  Option::Option(std::string gameName, Base* game)  
   {
-    Required_Input = std::to_string(number);
+    Name = gameName;
     selection = game;
   }
 
   Base* Option::On_Select(void)
   {
     return selection;
+  }
+
+  std::vector<Option> PopulateGameList(void)
+  {
+    //GameList.push_back(Option("Game Name", Game*));
+
+    return GameList;
   }
 }

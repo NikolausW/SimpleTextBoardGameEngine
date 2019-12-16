@@ -17,6 +17,7 @@ namespace Client
       virtual Game::Option* Select(void);
     protected:
       void Generate_List(void);
+      std::vector<Game::Option> Options;
     private:
       static Game_Select* Instance;
       Game_Select();
@@ -37,8 +38,8 @@ namespace Client
     public:
       Instance();
       void Instance_Loop(void);
-    private:
       std::vector<Game::Player> playerlist;
+    private:
       Game::Base* currentgame;
       Client_Dialog dialog;
 

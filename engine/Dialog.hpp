@@ -13,9 +13,8 @@ namespace Dialog
   {
     public:
       std::string Name,
-                  Required_Input;
-      virtual bool Conditional(void); 
-      //probably needs On_Select() method template
+                  Required_Input;  
+      virtual bool Conditional(void);
   };
 
   class Option_Select
