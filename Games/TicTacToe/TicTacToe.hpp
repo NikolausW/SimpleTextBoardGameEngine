@@ -15,28 +15,28 @@ namespace TicTacToe
   {
     public:
       TTT(); //Constructor
+      //Locations locations;
+      //Pieces pieces;
       //virtual void Game_Loop(void) BASE IMPLEMENTATION
     protected:
       //num_players = 2
       //turn number starts at 0
-      enum Pieces{Blank, Cross, Circle};
       //turns vector
       //board vector
       //players vector
       //PlaySpace* playspace when implemented 
-      //AI* ai when implemented
       //Turn* Turn Pretty sure I can just use the base implementation for this
       //TTTDialog* when implemented
 
       //bool Round_Over(void) BASE IMPLEMENTATION
-      virtual bool Round_Won(void); //checks if Round is won
-      virtual bool Round_Tie(void); //checks if the Round results in a tie
+      bool Round_Won(void); //checks if Round is won
+      bool Round_Tie(void); //checks if the Round results in a tie
       //void Execute_Turn(void) BASE IMPLEMENTATION
       //size_t Player_X_Turn(void) BASE IMPLEMENTATION
-      virtual void Process_Move(Game::Move* move);
+      void Process_Move(Game::Move* move);
       //void Round_End(void) BASE IMPLEMENTATION
       //void Play_Again(bool again) BASE IMPLEMENTATION
-      virtual void Reset(void);
+      void Reset(void);
   };
 }
 #endif

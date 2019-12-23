@@ -11,7 +11,7 @@ namespace Dialog
   {
     for(size_t i = 0; i < str.length(); i += width)
     {
-      std::cout << str.substr(i, width) << std::endl;
+      std::cout << str.substr(i, width); // << std::endl;
     }
   }
 

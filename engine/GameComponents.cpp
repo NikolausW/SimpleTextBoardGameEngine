@@ -27,10 +27,16 @@ namespace Game
       }
   }
 
-  void PlaySpace::Write_UndoRedo(bool un, bool re)
+  void PlaySpace::Write_UndoRedo(bool un, bool re) // LOL THIS IS SO BAD, PLEASE FIX ME
   {
-    if(un){display.replace(Get_Coordinate(Redo), redo.length(), redo);}
-    else{display.replace(Get_Coordinate(Undo), removeUndoRedo.length(), removeUndoRedo);} 
+    if(un)
+    {
+      display.replace(Get_Coordinate(locations->Redo), redo.length(), redo);
+    }
+    else
+    {
+      display.replace(Get_Coordinate(locations->Undo), removeUndoRedo.length(), removeUndoRedo);
+    } 
   }
 
   Move::Move(int sq)
@@ -81,19 +87,18 @@ namespace Game
   {
     Name = "New Player";
     Required_Input = "0";
-    CPU = true;
+    CPU = false;
     score = 0;
   }
 
-  Player* newPlayer::On_Select() //THIS IS TRASH. FIX IT
+  Player* newPlayer::On_Select()
   { 
-    Player* empty;
-    return empty;
+    return NULL;
   }
 
   void Player_Select::Generate_List(void)
   {
-    Options.push_back(newPlayer());
+    Options.push_back(newPlayer()); // Sets New Player as an option 
 
     for(int i = 0; i < masterlist->size(); i++)
     {
@@ -118,5 +123,34 @@ namespace Game
     Play_Again = "";
     Round_Winner = "";
     Round_Tie = "";
+  }
+
+  std::vector<Player*> BaseDialog::Select_Players(int num_players)
+  {
+    std::vector<Player*> Current_Players;
+
+    for(int i = 0; i < num_players; i++)
+    {
+      Player* player = playerselect.Select();
+      if(!player)
+      {
+        player = Player_Setup();
+      }
+      Current_Players.push_back(player);
+    }
+    return Current_Players;
+  }
+
+  Player* BaseDialog::Player_Setup(void)
+  {
+    std::string PlayerName;
+    bool PlayerAI;
+    Prompt(newPlayer_Name.size(), newPlayer_Name);
+    std::cin >> PlayerName;
+    Prompt(newPlayer_Ai.size(), newPlayer_Ai);
+    PlayerAI = YesNo->Select()->On_Select();
+    Player player = Player(PlayerName, PlayerAI);
+    // Need a way to push this up to the Client
+    return &player; 
   }
 }

@@ -7,9 +7,10 @@ namespace TicTacToe
   //Dimensions of PlaySpace
     height = 15;
     width = 33;
-  //Populate enums
-    enum Locations : int;
-    enum Pieces : int;
+
+  //Asset Assignment
+    locations = TTT_Locations;
+    pieces = TTT_Pieces;
   //Visual Asset Assignment
     //Need access to Current Players
     Player1Score = "Score: ";
@@ -27,13 +28,13 @@ namespace TicTacToe
     Setup_Display();
   }
 
-  void TTT_PlaySpace::Write_Piece(TTT_PlaySpace::Locations location, TTT_PlaySpace::Pieces piece)
+  void TTT_PlaySpace::Write_Piece(const int location, const int piece)
   {
     switch(piece)
     {
-      case Blank: Write_Blank(location);
-      case Circle: Write_Circle(location);
-      case Cross: Write_Cross(location);
+      case pieces.Blank: Write_Blank(location);
+      case pieces.Circle: Write_Circle(location);
+      case pieces.Cross: Write_Cross(location);
     }
   }
 
@@ -63,24 +64,24 @@ namespace TicTacToe
       Clear_Board();
   }
   
-  size_t TTT_PlaySpace::Get_Coordinate(Locations location)
+  size_t TTT_PlaySpace::Get_Coordinate(const int location)
   {
     switch(location)
     {
-      case One: return (3 * width) + 12 - 1;
-      case Two: return (3 * width) + 16 - 1;
-      case Three: return (3 * width) + 20 - 1;
-      case Four: return (7 * width) + 12 - 1;
-      case Five: return (7 * width) + 16 - 1;
-      case Six: return (7 * width) + 20 - 1;
-      case Seven: return (11 * width) + 12 - 1;
-      case Eight: return (11 * width) + 16 - 1;
-      case Nine: return (11 * width) + 20 - 1;
-      case Undo: return (11 * width) + 26 - 1;
-      case Redo: return (10 * width) + 26 - 1;
-      case Board_Horizontal1: return (6 * width) + 12 - 1;
-      case Board_Horizontal2: return (10 * width) + 12 - 1;
-      case Board_Vertical_Start: return (3 * width) + 15 - 1;
+      case locations.Square_One: return (3 * width) + 12 - 1;
+      case locations.Square_Two: return (3 * width) + 16 - 1;
+      case locations.Square_Three: return (3 * width) + 20 - 1;
+      case locations.Square_Four: return (7 * width) + 12 - 1;
+      case locations.Square_Five: return (7 * width) + 16 - 1;
+      case locations.Square_Six: return (7 * width) + 20 - 1;
+      case locations.Square_Seven: return (11 * width) + 12 - 1;
+      case locations.Square_Eight: return (11 * width) + 16 - 1;
+      case locations.Square_Nine: return (11 * width) + 20 - 1;
+      case locations.Undo: return (11 * width) + 26 - 1;
+      case locations.Redo: return (10 * width) + 26 - 1;
+      case locations.Board_Horizontal1: return (6 * width) + 12 - 1;
+      case locations.Board_Horizontal2: return (10 * width) + 12 - 1;
+      case locations.Board_Vertical_Start: return (3 * width) + 15 - 1;
       //case Header_Name1: return 4 - (name.length() / 2) - 1;
       //case Header_Name2: return 27 - (name2.length() / 2) - 1;
       //case Header_Score1: return (4 - Player1Score.length() / 2) + width - 1;
@@ -104,7 +105,7 @@ namespace TicTacToe
     cross[2] = "/ \\";
   }
 
-  void TTT_PlaySpace::Write_Blank(Locations location)
+  void TTT_PlaySpace::Write_Blank(const int location)
   {
     size_t coordinate = Get_Coordinate(location);
 
@@ -114,7 +115,7 @@ namespace TicTacToe
     display.replace(coordinate + (width * 2), blank.length(), blank);
   }
 
-  void TTT_PlaySpace::Write_Circle(Locations location)
+  void TTT_PlaySpace::Write_Circle(const int location)
   {
     size_t coordinate = Get_Coordinate(location);
 
@@ -124,7 +125,7 @@ namespace TicTacToe
       }  
   }
 
-  void TTT_PlaySpace::Write_Cross(Locations location)
+  void TTT_PlaySpace::Write_Cross(const int location)
   {
     size_t coordinate = Get_Coordinate(location);
 

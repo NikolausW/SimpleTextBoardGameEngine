@@ -11,16 +11,17 @@ namespace Game
   class Base
   {
     public:
+      Locations* locations;
+      Pieces* pieces;
       virtual void Game_Loop(void);
     protected:
       int num_players,
           turn_number;
-      enum Pieces{};
-      std::vector<int> turns; //stores squares played to, should probably be an option 
-      std::vector<Pieces> board; //current game/board state
+      std::vector<Move*> turns; //stores squares played to, this should be change to move/move*, there's no guarntee that turns will always just be an int
+      std::vector<const int> board; //current game/board state   Could change this to <int> or whatever format the enum is, but that forces an enum
       std::vector<Player*> players ; // Players actively in this game instance 
       PlaySpace* playspace; // Pointer to Playspace for this game
-      AI* ai; // Ai pointer for this game, NULL if not available/implemented
+      //AI* ai; // Ai pointer for this game, NULL if not available/implemented
       Turn* turn; // Pointer to game turn logic
       BaseDialog* dialog; // dialog for this game type, need to split off turn dialog
 

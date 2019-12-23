@@ -15,6 +15,7 @@ namespace Dialog
       std::string Name,
                   Required_Input;  
       virtual bool Conditional(void);
+      //On_Select();
   };
 
   class Option_Select
