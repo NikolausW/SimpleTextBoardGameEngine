@@ -2,6 +2,9 @@
 
 namespace Game
 {
+  typedef const int Piece;
+  typedef const int Location;
+  
   PlaySpace::PlaySpace()
   {
     undo = "Undo:z";

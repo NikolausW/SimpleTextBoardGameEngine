@@ -5,6 +5,7 @@
 #include "Dialog.hpp"
 #include <string>
 #include <vector>
+// Need Randomized libraries here for AI methods
 
 namespace Game
 {
@@ -22,6 +23,18 @@ namespace Game
     public: //Silly because structs by default are public
       const int Blank = 0;
       virtual ~Pieces() = 0;
+  };
+
+  class GameState
+  {
+    public:
+      int turn_number;
+      std::vector<Move*> turns; //stores squares played to, this should be change to move/move*, there's no guarntee that turns will always just be an int
+      std::vector<const int> board; //current game/board state   Could change this to <int> or whatever format the enum is, but that forces an enum 
+      virtual bool Round_Won(void) = 0; // Checks if Round is won
+      virtual bool Round_Tie(void) = 0; // Checks if the Round results in a tie
+      virtual void Process_Move(Move* move) = 0; // This will parse the move object
+      virtual void Reset(void) = 0; // Resets gamestate
   };
 
   class Move : public Dialog::Option

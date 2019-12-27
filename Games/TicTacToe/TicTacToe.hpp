@@ -24,19 +24,17 @@ namespace TicTacToe
       //turns vector
       //board vector
       //players vector
+      //GameState* gamestate
       //PlaySpace* playspace when implemented 
       //Turn* Turn Pretty sure I can just use the base implementation for this
       //TTTDialog* when implemented
 
       //bool Round_Over(void) BASE IMPLEMENTATION
-      bool Round_Won(void); //checks if Round is won
-      bool Round_Tie(void); //checks if the Round results in a tie
-      //void Execute_Turn(void) BASE IMPLEMENTATION
-      //size_t Player_X_Turn(void) BASE IMPLEMENTATION
+      //void Execute_Turn(void) BASE IMPLEMENTATIO
       void Process_Move(Game::Move* move);
+      //size_t Player_X_Turn(void) BASE IMPLEMENTATION
       //void Round_End(void) BASE IMPLEMENTATION
       //void Play_Again(bool again) BASE IMPLEMENTATION
-      void Reset(void);
   };
 }
 #endif

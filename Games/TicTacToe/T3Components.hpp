@@ -34,8 +34,19 @@ namespace TicTacToe
     const int Cross = 1,
               Circle = 2;
   };
+  
+  class TTT_GameState : public Game::GameState
+  {
+    TTT_GameState();
+    //int turn number;
+    //std::vector<Move*> turns;
+    //std::vector<const int> board;
+    bool Round_Won(void);
+    bool Round_Tie(void);    
+    void Reset(void);
+  };
 
-  class TTT_Move : public Game::Move
+  class TTT_Move : public Game::Move // Will probably remove this, it's not unique
   {
     public:
       TTT_Move(int sq);
@@ -43,7 +54,7 @@ namespace TicTacToe
       //int square
   };
 
-  class TTT_Move_Select : public Game::Move_Select
+  class TTT_Move_Select : public Game::Move_Select 
   {
     public:
       //Move* Select(void); ??? BASE BASE IMPLEMENTATION???
@@ -57,7 +68,7 @@ namespace TicTacToe
   class TTT_Turn : public Game::Turn
   {
     public:
-      TTT_Turn();
+      TTT_Turn(void);
       //AI* ai;
       //Game::Turn_Dialog dialog; //Base Implementation
       //Move* AI(void); //Base Implementation

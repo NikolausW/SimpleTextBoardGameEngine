@@ -14,7 +14,7 @@ namespace Game
 
   bool Base::Round_Over(void)
   {
-    if(Round_Won() || Round_Tie())
+    if(gamestate->Round_Won() || gamestate->Round_Tie())
     {
       return true;
     }
@@ -25,19 +25,24 @@ namespace Game
   {
     if(players[Player_X_Turn()]->CPU)
     {
-      Process_Move(turn->AI());
+      gamestate->Process_Move(turn->AI());
     }    
-    Process_Move(turn->Player());
+    gamestate->Process_Move(turn->Player());
   }
 
   size_t Base::Player_X_Turn(void)
   {
-    return turn_number % num_players;
+    return gamestate->turn_number % num_players;
+  }
+
+  void Base::Process_Move(Move* move)
+  {
+    //parse the move and do something with it
   }
 
   void Base::Round_End(void)
   {
-    if(Round_Won())
+    if(gamestate->Round_Won())
     {
       Player* winner = players[Player_X_Turn()];
       winner->score++;
@@ -55,7 +60,7 @@ namespace Game
   {
     if(again)
     {
-      Reset();
+      gamestate->Reset();
     }    
   }
 }
