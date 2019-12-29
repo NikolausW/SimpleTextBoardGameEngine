@@ -38,12 +38,12 @@ namespace Client
 
   Client_Dialog::Client_Dialog()
   {
-    gameselect = Game_Select::option_select();
+    gameselect = Game_Select::Get_Instance();
     welcome = "Welcome"; //ascii art replacement
     thankYou = "Thank you for playing!"; //ascii art replacement
   };
 
-  Game_Select* Game_Select::option_select()
+  Game_Select* Game_Select::Get_Instance()
   {
     if(!Instance)
     {
@@ -51,16 +51,6 @@ namespace Client
     }
     return Instance;   
   }
-
-  Game::Option* Game_Select::Select()
-  {
-    Game::Option* selection;
-
-    Print_List();
-    while(!Validate_Input(Take_Input()))
-      ; // do nothing
-    return selection;
-  };
 
   void Game_Select::Generate_List(void)
   {

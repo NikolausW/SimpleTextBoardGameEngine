@@ -30,7 +30,7 @@ namespace TicTacToe
 
   struct TTT_Pieces : public Game::Pieces
   {
-           // Blank = 0
+           // Blank = 0;
     const int Cross = 1,
               Circle = 2;
   };
@@ -62,8 +62,6 @@ namespace TicTacToe
       //void Print_List(void); BASE IMPLEMENTATION
       void Generate_List(void); //This will probably require a unique constructor
   };
-
-  //Base Implementation of Turn_Dialog?
 
   class TTT_Turn : public Game::Turn
   {

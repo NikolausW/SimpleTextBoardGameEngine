@@ -44,12 +44,8 @@ namespace Game
 
   Move::Move(int sq)
   {
+    selection = this;
     square = sq;
-  }
-
-  Move* Move::On_Select()
-  {
-    return this;
   }
 
   void Move_Select::Print_List(void)
@@ -81,22 +77,13 @@ namespace Game
     score = 0;
   }
 
-  Player* Player::On_Select()
-  {
-    return this;
-  }
-
   newPlayer::newPlayer()
   {
     Name = "New Player";
     Required_Input = "0";
     CPU = false;
     score = 0;
-  }
-
-  Player* newPlayer::On_Select()
-  { 
-    return NULL;
+    selection = NULL;
   }
 
   void Player_Select::Generate_List(void)

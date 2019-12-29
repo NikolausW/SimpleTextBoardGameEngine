@@ -10,17 +10,25 @@
 
 namespace Client
 {
-  class Game_Select : public Dialog::Option_Select //why did I make this a singleton?
+  class Game_Select : public Dialog::Option_Select<Game::Base*>
   {
     public:
-      static Game_Select* option_select();
-      virtual Game::Option* Select(void);
+      static Game_Select* Get_Instance(); // Singleton call method
+      // Game::Option* Select(void);
     protected:
+      // int Input_Length;
+      // std::string User_Input(void);    
+      // std::vector<Game::Option> Options;
+
+      // void Print_List(void);
+      // std::string Generate_Option_String(Game::Option* option);
+      // std::string Take_Input(void);
+      // bool Validate_Input(std::string input);
+      // Game::Option* Process_Input(void);
       void Generate_List(void);
-      std::vector<Game::Option> Options;
     private:
-      static Game_Select* Instance;
-      Game_Select();
+      static Game_Select* Instance; // Pointer to itself
+      Game_Select(); // private constructor 
   };
 
   class Client_Dialog : public Dialog::Base
@@ -31,6 +39,9 @@ namespace Client
       Game_Select* gameselect;
       std::string welcome,
                   thankYou;
+      // void Prompt(size_t width, std::string str);
+      // YesNo_Select* YesNo;
+      // void Clear_Screen(void);
   };
 
   class Instance

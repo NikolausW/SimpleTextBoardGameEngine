@@ -37,20 +37,31 @@ namespace Game
       virtual void Reset(void) = 0; // Resets gamestate
   };
 
-  class Move : public Dialog::Option
+  class Move : public Dialog::Option<Game::Move*>
   {
     public:
-      Move(int sq);
-      Move* On_Select(); //Turn_Select
+      Move(int sq); // Constructor
+      // std::string Name,
+      //             Required_Input;
+      // bool Conditional(void);
+      // Move* On_Select(void);
+      // Move* selection; 
       int square;  
   };
 
-  class Move_Select : public Dialog::Option_Select
+  class Move_Select : public Dialog::Option_Select<Game::Move*>
   {
     public:
-      virtual Move* Select(void);
+      // virtual Move* Select(void); 
     protected:
-      virtual void Print_List(void);
+      // int Input_Length;
+      // std::string User_Input;
+      // std::vector<Move> Options;
+      virtual void Print_List(void); // intentionally does nothing
+      // virtual std::string Generate_Option_String(Move* option); 
+      // virtual std::string Take_Input(void);
+      // virtual bool Validate_Input(std::string input); 
+      // virtual Move* Process_Input(void); 
       virtual void Generate_List(void) = 0; //This may not need to be pure virtual
   };
 
@@ -59,8 +70,8 @@ namespace Game
     public:
       virtual Move* Turn(void) = 0; 
     protected:
-      virtual Move* Either(Move a, Move b); //Need to implement
-      virtual Move* Open_Space(void); //Need to implement
+      virtual Move* Either(Move a, Move b); // Need to implement
+      virtual Move* Open_Space(void); // Need to implement
   };
 
   class PlaySpace 
@@ -93,47 +104,70 @@ namespace Game
   {
     public:
       Turn_Dialog();
-      Move_Select* select;      
+      Move_Select* select; // Does this need to be explecitly a Move_Select* ? Could it be an Option_Select*    
       std::string move_prompt,
                   invalid;
+
+    //  virtual void Prompt(size_t width, std::string str);
+    //  YesNo_Select* YesNo;
+    //  virtual void Clear_Screen(void);
   };
 
   class Turn
   {
     public:
-      Turn();
+      Turn(); // Needs to be written 
       AI* ai;
       Turn_Dialog dialog;
       virtual Move* AI(void);
       virtual Move* Player(void);
   };
 
-  class Player : public Dialog::Option 
+  class Player : public Dialog::Option<Game::Player*>
   {
     public:
-      Player(); //this should never be called
+      Player(); //this should never be called, define it so that it calls below constructor with default values
       Player(std::string name, bool ai);
-      Player* On_Select();
+      // std::string Name,
+      //             Required_Input;
+      // bool Conditional(void);
+      // Player* On_Select(void);
+      // Player* selection;
       int score;
       bool CPU;
   };
 
-  class newPlayer : public Player //This should probably be a singleton
+  class newPlayer : public Player
   {
     public:
       newPlayer();
-      Player* On_Select();
+      // std::string Name,
+      //             Required_Input;
+      // bool Conditional(void);
+      // Player* On_Select(void);
+      // Player* selection;
+      // int score
+      // bool CPU 
   };
 
-  class Player_Select : Dialog::Option_Select // This should be a singleton
+  class Player_Select : Dialog::Option_Select<Game::Player*> 
   {
     public:
-      Player_Select();
-      virtual Player* Select(void);
+      Player_Select(); // Will need paramatized constructor
+      //Player* Select(void);
     protected:
-      std::vector<Player>* masterlist;
+      // int Input_Length;
+      // std::string User_Input;
+      // std::vector<Move> Options;
+      std::vector<Player>* masterlist; // This just needs to be a pointer to client list, might need a constructor param
       std::vector<Player*>* currentplayers;
       bool ai;
+
+      // void Print_List(void); 
+      // std::string Generate_Option_String(Player* option); 
+      // std::string Take_Input(void); 
+      // bool Validate_Input(std::string input); 
+      // Player* Process_Input(void); 
       //Badly need to break this into smaller chunks
       void Generate_List(void); // takes client player list, adds option to create new player
   };
@@ -144,13 +178,17 @@ namespace Game
     public:
       BaseDialog(void);  
       Player_Select playerselect; 
-      virtual std::vector<Player*> Select_Players(int num_players);
-      virtual Player* Player_Setup(void); //calls the player constructor returnin a new player object
       std::string newPlayer_Name,
                   newPlayer_Ai,
                   Play_Again,
                   Round_Winner,
                   Round_Tie;
+      // virtual void Prompt(size_t width, std::string str);
+      // YesNo_Select* YesNo;
+      // virtual void Clear_Screen(void);
+
+      virtual std::vector<Player*> Select_Players(int num_players);
+      virtual Player* Player_Setup(void); //calls the player constructor returnin a new player object
   };
 }
 #endif
