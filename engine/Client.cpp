@@ -4,15 +4,15 @@ namespace Client
 {
   Instance::Instance()
   {
+    playerlist.clear(); // Replace if/when this is saved in a seperate file
+    //dialog decalred, should not need to be initialized
     Instance_Loop();
-    Exit();
   }
 
   void Instance::Instance_Loop()
   {
     dialog.Prompt(dialog.welcome.length(), dialog.welcome);
-    currentgame = dialog.gameselect->Select()->On_Select();
-
+    currentgame = new Game::Base(gamedata);
     while(currentgame)
     {
       currentgame->Game_Loop();
@@ -23,11 +23,11 @@ namespace Client
 
   void Instance::Different_Game()
   {
-    currentgame = NULL;
+    currentgame = NULL; // replace this with proper destructor
     std::cout << "Would you like to play another game?" << std::endl; //replace with dialog
     if(dialog.YesNo->Select())
     {
-      currentgame = dialog.gameselect->Select()->On_Select();
+      currentgame = new Game::Base(gamedata);
     }
   }
 
@@ -54,7 +54,7 @@ namespace Client
 
   void Game_Select::Generate_List(void)
   {
-    Options = Game::PopulateGameList();
+    Game::PopulateGameList(Options);
   }
 
   Game_Select::Game_Select()

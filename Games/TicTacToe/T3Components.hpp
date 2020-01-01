@@ -8,31 +8,31 @@ namespace TicTacToe
 {
   struct TTT_Locations : public Game::Locations
   {
-    const int Square_One = 1,
-              Square_Two = 2,
-              Square_Three = 3,
-              Square_Four = 4,
-              Square_Five = 5,
-              Square_Six = 6,
-              Square_Seven = 7,
-              Square_Eight = 8,
-              Sqaure_Nine = 9,
-              //Undo = 1000
-              //Redo = 1001
-              Board_Horizontal1 = 1002,
-              Board_Horizontal2 = 1003,
-              Board_Vertical_Start = 1004,
-              Header_Name1 = 1005,
-              Header_Name2 = 1006,
-              Header_Score1 = 1007,
-              Header_Score2 = 1008;
+    const static int Square_One = 1,
+                 Square_Two = 2,
+                 Square_Three = 3,
+                 Square_Four = 4,
+                 Square_Five = 5,
+                 Square_Six = 6,
+                 Square_Seven = 7,
+                 Square_Eight = 8,
+                 Sqaure_Nine = 9,
+                 //Undo = 1000
+                 //Redo = 1001
+                 Board_Horizontal1 = 1002,
+                 Board_Horizontal2 = 1003,
+                 Board_Vertical_Start = 1004,
+                 Header_Name1 = 1005,
+                 Header_Name2 = 1006,
+                 Header_Score1 = 1007,
+                 Header_Score2 = 1008;
   };
 
   struct TTT_Pieces : public Game::Pieces
   {
-           // Blank = 0;
-    const int Cross = 1,
-              Circle = 2;
+                  // Blank = 0;
+    const static int Cross = 1,
+                     Circle = 2;
   };
   
   class TTT_GameState : public Game::GameState

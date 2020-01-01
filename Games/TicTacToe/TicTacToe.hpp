@@ -20,9 +20,6 @@ namespace TicTacToe
       //virtual void Game_Loop(void) BASE IMPLEMENTATION
     protected:
       //num_players = 2
-      //turn number starts at 0
-      //turns vector
-      //board vector
       //players vector
       //GameState* gamestate
       //PlaySpace* playspace when implemented 

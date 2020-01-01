@@ -2,6 +2,11 @@
 
 namespace Game
 {
+  Base::Base(GameData& data)
+  {
+    
+  }
+
   void Base::Game_Loop(void)
   {
     while(!Round_Over())
@@ -25,19 +30,24 @@ namespace Game
   {
     if(players[Player_X_Turn()]->CPU)
     {
-      gamestate->Process_Move(turn->AI());
+      Process_Move(turn->AI());
     }    
-    gamestate->Process_Move(turn->Player());
+    Process_Move(turn->Player());
   }
 
   size_t Base::Player_X_Turn(void)
   {
-    return gamestate->turn_number % num_players;
+    return gamestate->turn_number % player_count;
   }
 
   void Base::Process_Move(Move* move)
   {
-    //parse the move and do something with it
+    std::vector<Move> updates = gamestate->Update(move);
+
+    for(int i = 0; i < updates.size(); i++)
+    {
+      playspace->Write_Piece(updates[i].piece, updates[i].square);
+    }
   }
 
   void Base::Round_End(void)
@@ -53,7 +63,7 @@ namespace Game
       //dialog prompt tie CATS GAME
     }
     //std::cout << "Would you like to play again?" << std::endl; //Change this to a prompt
-    //Play_Again(dialog.YesNo()); Need to figure out reference to YesNo
+    Play_Again(dialog->YesNo->Select());
   }
 
   void Base::Play_Again(bool again) //REFACTOR THIS

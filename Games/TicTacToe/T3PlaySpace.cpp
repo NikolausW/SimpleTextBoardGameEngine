@@ -9,8 +9,8 @@ namespace TicTacToe
     width = 33;
 
   //Asset Assignment
-    locations = TTT_Locations;
-    pieces = TTT_Pieces;
+    //locations = 
+    //pieces = 
   //Visual Asset Assignment
     //Need access to Current Players
     Player1Score = "Score: ";
@@ -32,9 +32,9 @@ namespace TicTacToe
   {
     switch(piece)
     {
-      case pieces.Blank: Write_Blank(location);
-      case pieces.Circle: Write_Circle(location);
-      case pieces.Cross: Write_Cross(location);
+      case pieces->Blank: Write_Blank(location);
+      case pieces->Circle: Write_Circle(location);
+      case pieces->Cross: Write_Cross(location);
     }
   }
 
@@ -68,20 +68,20 @@ namespace TicTacToe
   {
     switch(location)
     {
-      case locations.Square_One: return (3 * width) + 12 - 1;
-      case locations.Square_Two: return (3 * width) + 16 - 1;
-      case locations.Square_Three: return (3 * width) + 20 - 1;
-      case locations.Square_Four: return (7 * width) + 12 - 1;
-      case locations.Square_Five: return (7 * width) + 16 - 1;
-      case locations.Square_Six: return (7 * width) + 20 - 1;
-      case locations.Square_Seven: return (11 * width) + 12 - 1;
-      case locations.Square_Eight: return (11 * width) + 16 - 1;
-      case locations.Square_Nine: return (11 * width) + 20 - 1;
-      case locations.Undo: return (11 * width) + 26 - 1;
-      case locations.Redo: return (10 * width) + 26 - 1;
-      case locations.Board_Horizontal1: return (6 * width) + 12 - 1;
-      case locations.Board_Horizontal2: return (10 * width) + 12 - 1;
-      case locations.Board_Vertical_Start: return (3 * width) + 15 - 1;
+      case locations->Square_One: return (3 * width) + 12 - 1;
+      case locations->Square_Two: return (3 * width) + 16 - 1;
+      case locations->Square_Three: return (3 * width) + 20 - 1;
+      case locations->Square_Four: return (7 * width) + 12 - 1;
+      case locations->Square_Five: return (7 * width) + 16 - 1;
+      case locations->Square_Six: return (7 * width) + 20 - 1;
+      case locations->Square_Seven: return (11 * width) + 12 - 1;
+      case locations->Square_Eight: return (11 * width) + 16 - 1;
+      case locations->Square_Nine: return (11 * width) + 20 - 1;
+      case locations->Undo: return (11 * width) + 26 - 1;
+      case locations->Redo: return (10 * width) + 26 - 1;
+      case locations->Board_Horizontal1: return (6 * width) + 12 - 1;
+      case locations->Board_Horizontal2: return (10 * width) + 12 - 1;
+      case locations->Board_Vertical_Start: return (3 * width) + 15 - 1;
       //case Header_Name1: return 4 - (name.length() / 2) - 1;
       //case Header_Name2: return 27 - (name2.length() / 2) - 1;
       //case Header_Score1: return (4 - Player1Score.length() / 2) + width - 1;

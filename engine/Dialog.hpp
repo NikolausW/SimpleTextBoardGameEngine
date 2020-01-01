@@ -16,7 +16,7 @@ namespace Dialog
       std::string Name,
                   Required_Input;  
       virtual bool Conditional(void); // by default the option is always allowed
-      virtual T On_Select(); // can maybe get rid of this method? If all it does is return selection
+      virtual T On_Select(void); // can maybe get rid of this method? If all it does is return selection
       T selection; // What the option returns
   };
 
@@ -25,18 +25,19 @@ namespace Dialog
   {
     public:
       Option_Select();
-      virtual Option<T>* Select(void); //Kicks off below methods and returns a pointer to the user selected option
+      virtual T* Select(void); //Kicks off below methods and returns a pointer to the user selected option
+      virtual void Select(T& option); // THIS MIGHT NOT BE NEEDED?
     protected:
-      int Input_Length;
-      std::string User_Input;
-      std::vector<Option<T>> Options; //List of Options to be selected from
+      int Input_Length; // maybe make this const
+      std::string User_Input; 
+      std::vector<T> Options; //List of Options to be selected from
 
       virtual void Print_List(void); //Prints Options
-      virtual std::string Generate_Option_String(Option<T>* option); //Constructs the strings that print list will print 
+      virtual std::string Generate_Option_String(T* option); //Constructs the strings that print list will print 
       virtual std::string Take_Input(void); //Simply takes the input from user
       virtual bool Validate_Input(std::string input); //Validates received input
-      virtual Option<T>* Process_Input(void); // Translates validated input to an Option
-      virtual void Generate_List(void) = 0;
+      virtual T* Process_Input(void); // Translates validated input to an Option
+      virtual void Generate_List(void) = 0; // This should generate User_Input if it creates the options itself
   };
 
   class YesNo_Option : public Option<bool>
@@ -46,11 +47,11 @@ namespace Dialog
       //std::string Name,
       //            Required_Input;
       // bool Conditional(void);
-      // bool On_Select(); //yesno
+      // bool On_Select();
       // bool selection;
   };
 
-  class YesNo_Select : public Option_Select<bool>
+  class YesNo_Select : public Option_Select<YesNo_Option>
   {
     public:
       static YesNo_Select* Get_Instance();
@@ -61,7 +62,7 @@ namespace Dialog
       // std::vector<YesNo_Option> Options;
 
       void Print_List(void);
-      std::string Generate_Option_String(Option<bool>* option); 
+      std::string Generate_Option_String(YesNo_Option* option);
       // std::string Take_Input(void);
       // bool Validate_Input(std::string input);
       // YesNo_Option* Process_Input(void);
@@ -75,9 +76,9 @@ namespace Dialog
   {
     public:
       Base();
-      virtual void Prompt(size_t width, std::string str);
+      virtual void Prompt(size_t width, std::string str) const;
       YesNo_Select* YesNo;
-      virtual void Clear_Screen(void);  
+      virtual void Clear_Screen(void) const;  
   };
 }
 #endif

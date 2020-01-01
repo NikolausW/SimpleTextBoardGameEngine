@@ -2,16 +2,15 @@
 
 namespace Game
 {
-  Option::Option(std::string gameName, Base* game)  
+  void Option::On_Select(GameData& option)
   {
-    Name = gameName;
-    selection = game;
+    
   }
 
-  std::vector<Option> PopulateGameList(void)
+  void PopulateGameList(std::vector<Game::Option> gamelist)
   {
-    //GameList.push_back(Option("Game Name", Game*));
-    GameList.push_back(Option("Tic Tac Toe", &TicTacToe::TTT())); // what does this even do?
-    return GameList;
+    //GameList.push_back(Option("Game Name"));
   }
+
+
 }

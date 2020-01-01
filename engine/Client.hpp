@@ -10,11 +10,11 @@
 
 namespace Client
 {
-  class Game_Select : public Dialog::Option_Select<Game::Base*>
+  class Game_Select : public Dialog::Option_Select<Game::Option>
   {
     public:
       static Game_Select* Get_Instance(); // Singleton call method
-      // Game::Option* Select(void);
+      // void Select(Game::Option);
     protected:
       // int Input_Length;
       // std::string User_Input(void);    
@@ -51,6 +51,7 @@ namespace Client
       void Instance_Loop(void);
       std::vector<Game::Player> playerlist;
     private:
+      Game::GameData gamedata;
       Game::Base* currentgame;
       Client_Dialog dialog;
 

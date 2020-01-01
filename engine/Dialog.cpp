@@ -7,7 +7,7 @@ namespace Dialog
     YesNo = YesNo_Select::Get_Instance();
   }
 
-  void Base::Prompt(size_t width, std::string str)
+  void Base::Prompt(size_t width, std::string str) const
   {
     for(size_t i = 0; i < str.length(); i += width)
     {
@@ -15,7 +15,7 @@ namespace Dialog
     }
   }
 
-  void Base::Clear_Screen()
+  void Base::Clear_Screen() const
   {
     for(int i = 50; i > 0; i--)
     {
@@ -42,9 +42,9 @@ namespace Dialog
   }
 
   template <class T>
-  Option<T>* Option_Select<T>::Select()
+  T* Option_Select<T>::Select()
   {
-    Option<T>* selection;
+    T* selection;
 
     if(Options.size() == 1)
     {
@@ -61,7 +61,23 @@ namespace Dialog
   };
 
   template <class T>
-  void Option_Select<T>::Print_List()
+  void Option_Select<T>::Select(T& option)
+  {
+    if(Options.size() == 1)
+    {
+      Options[0]->On_Select(option);
+    }
+    else
+    {
+      Print_List();
+      while(!Validate_Input(Take_Input()))
+        ; // do nothing
+      Process_Input()->On_Select(option);
+    }    
+  }
+
+  template <class T>
+  void Option_Select<T>::Print_List() 
   {
     for(int i = 0; i < Options.size(); i++)
     {
@@ -73,10 +89,18 @@ namespace Dialog
   }
   
   template <class T>
-  std::string Option_Select<T>::Generate_Option_String(Option<T>* option)
+  std::string Option_Select<T>::Generate_Option_String(T* option)
   {
     std::ostringstream ss;
-    ss << option->Required_Input << ") " << option->Name;
+    try
+    {
+      ss << option->Required_Input << ") " << option->Name;
+    }
+    catch(const std::exception& e)
+    {
+      std::cerr << e.what() << '\n';
+      abort();
+    }   
     return ss.str();
   }
 
@@ -94,24 +118,31 @@ namespace Dialog
   {
     for(int i = 0; i < Options.size(); i++)
     {
-      if(input == Options[i].Required_Input)
+      try
       {
-        if(!Options[i].Conditional())
+        if(input == Options[i].Required_Input)
         {
-          return false;
+          if(!Options[i].Conditional())
+          {
+            return false;
+          }
+          else
+          {
+            return true;
+            User_Input = input;
+          }        
         }
-        else
-        {
-          return true;
-          User_Input = input;
-        }        
       }
+      catch(const std::exception& e)
+      {
+        std::cerr << e.what() << '\n';
+      }  
     }
     return false;
   }
 
   template <class T>
-  Option<T>* Option_Select<T>::Process_Input()
+  T* Option_Select<T>::Process_Input()
   {
     for(int i = 0; i < Options.size(); i++)
     {
@@ -138,13 +169,6 @@ namespace Dialog
     }
   }
 
-  /* Likely to be deleted as redundant 
-  bool YesNo_Option::On_Select()
-  {
-    return selection;
-  }
-  */
-
   YesNo_Select* YesNo_Select::Get_Instance()
   {
     if(!Instance)
@@ -159,7 +183,7 @@ namespace Dialog
     std::cout << Generate_Option_String(&Options[0]) << " / " << Generate_Option_String(&Options[1]) << "? :";
   }
 
-  std::string YesNo_Select::Generate_Option_String(Option<bool>* option)
+  std::string YesNo_Select::Generate_Option_String(YesNo_Option* option)
   {
     if(option->Required_Input == "y")
     {
