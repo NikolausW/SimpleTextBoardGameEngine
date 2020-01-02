@@ -31,20 +31,20 @@ namespace Game
   class Move : public Dialog::Option<Game::Move*>
   {
     public:
-      Move(Location sq, Piece pc); // Constructor
-      // std::string Name,
-      //             Required_Input;
+      Move(Location sq, Piece pc, std::string Required_Input); // Constructor
+      // std::string name,
+      //             required_input;
       // bool Conditional(void);
-      // Move* On_Select(void);
-      // Move* selection; 
+      Move* On_Select(void);
+      Move* selection; 
       Location square;
-      Piece piece;  
+      Piece piece;
   };
 
   class Move_Select : public Dialog::Option_Select<Game::Move>
   {
     public:
-      // virtual Move* Select(void); 
+      virtual Move Select(void); 
     protected:
       // int Input_Length;
       // std::string User_Input;
@@ -60,12 +60,12 @@ namespace Game
   class GameState
   {
     public:
-      GameState(const Pieces &Pieces, const Locations &Locations, size_t BoardSize);
+      GameState(const Pieces &Pieces, const Locations &Locations, size_t BoardSize, bool ai);
       int turn_number;
       bool Active_AI; // If a current player is AI THIS SHOULD LIKELY BE CONST
+      virtual std::vector<Move> Update(Move* move); // Updates Gamestate
       virtual bool Round_Won(void) = 0; // Checks if Round is won
       virtual bool Round_Tie(void) = 0; // Checks if the Round results in a tie
-      virtual std::vector<Move> Update(Move* move); // Updates Gamestate should probably make const then split off Process_Move
       virtual void Reset(void) = 0; // Resets gamestate
     protected:
       const Locations* locations;
@@ -83,20 +83,21 @@ namespace Game
   class AI
   {
     public:
-      virtual Move* Turn(void) const = 0; 
+      //AI(Gamestate& GameState); // Need to pass in the proper gamestate
+      virtual Move Turn(void) = 0; 
     protected:
-      virtual Move* Either(Move a, Move b); // Need to implement
-      virtual Move* Open_Space(void); // Need to implement
+      //Gamestate* gamestate; // For AI to reference the current gamestate
+      virtual Move Either(Move& a, Move& b); // Need to implement
+      virtual Move Open_Space(void); // Need to implement
   };
 
   class PlaySpace 
-  {
-    
+  {  
     public:
-      PlaySpace(const Pieces &Pieces, const Locations &Locations, size_t Width, size_t Height); // Need to populate these by passing in reference
+      PlaySpace(const Pieces &Pieces, const Locations &Locations, size_t Width, size_t Height);
       const Pieces* pieces;
       const Locations* locations;
-      virtual void Setup_Display(void); // Writes Header and Board and then Prints Playspace
+      void Setup_Display(void); // Writes Header and Board and then Prints Playspace
       virtual void Print_PlaySpace(void);
       virtual void New_Game(void) = 0; //This might not need to exist?
       virtual void Write_UndoRedo(bool un, bool re); //Writes or clears undo redo instructions
@@ -135,18 +136,19 @@ namespace Game
   class Turn
   {
     public:
-      //Turn() Force method to be written so that Turn is self contained?
       Turn(AI& AI, Turn_Dialog& Dialog); // Needs to be written 
-      const AI* ai;
+      AI* ai;
       Turn_Dialog* dialog;
-      virtual Move* AI(void);
-      virtual Move* Player(void);
+      virtual Move AI(void);
+      virtual Move Player(void);
+    private:
+      Turn(); // B A N N E D
   };
 
-  class Player : public Dialog::Option<Game::Player*>
+  class Player : public Dialog::Option<Player*>
   {
     public:
-      Player(std::string name, bool ai);
+      Player(std::string Name, bool ai);
       // std::string Name,
       //             Required_Input;
       // bool Conditional(void);
@@ -156,13 +158,13 @@ namespace Game
       bool CPU;
     private:
       Player(); // B A N N E D
-      friend class newPlayer; // Allows for newPlayer to have default constructor
+      friend class New_Player; // Allows for newPlayer to have default constructor
   };
 
-  class newPlayer : public Player
+  class New_Player : public Player
   {
     public:
-      newPlayer();
+      New_Player();
       // std::string Name,
       //             Required_Input;
       // bool Conditional(void);
@@ -172,18 +174,18 @@ namespace Game
       // bool CPU 
   };
 
-  class Player_Select : Dialog::Option_Select<Game::Player> 
+  class Player_Select : Dialog::Option_Select<Player> 
   {
     public:
-      Player_Select(bool ai, std::vector<Player>& ClientList); 
-      Player* Select(void); // Does this inherit base implementation?
+      Player_Select(bool ai, std::vector<Player>& ClientList);
+      Player Select();
       virtual Player* Add_Player(Player newPlayer);
     protected:
       bool ai_available; // AI available for current game
       // int Input_Length;
       // std::string User_Input;
       // std::vector<Move> Options;
-      std::vector<Player>* masterlist; // This just needs to be a pointer to client list, might need a constructor param
+      std::vector<Player>* masterlist; // This just needs to be a pointer to client list
       std::vector<Player*>* currentplayers;
 
       // void Print_List(void); 
@@ -195,23 +197,25 @@ namespace Game
       void Generate_List(void); // takes client player list, adds option to create new player
   };
 
-  class BaseDialog : public Dialog::Base 
+  class BaseDialog : protected Dialog::Base 
   {
     //Need to include strings for Again Prompt, Round Winner, and Round Tie
     public:
       BaseDialog(Player_Select& PlayerSelect);  
-      Player_Select* playerselect; 
+      Player_Select* playerselect;
+      std::vector<Player>* masterlist;
+      std::vector<Player*>* currentplayers;
       std::string newPlayer_Name,
                   newPlayer_Ai,
                   Play_Again,
                   Round_Winner,
                   Round_Tie;
+
+      virtual void Select_Players(int num_players);
+      Player* Player_Setup(void); //calls the player constructor returnin a new player object
       // virtual void Prompt(size_t width, std::string str);
       // YesNo_Select* YesNo;
       // virtual void Clear_Screen(void);
-
-      virtual std::vector<Player*> Select_Players(int num_players);
-      virtual void Player_Setup(void); //calls the player constructor returnin a new player object
     private:
       BaseDialog();
   };

@@ -1,55 +1,30 @@
 #include "GameComponents.hpp"
 
 namespace Game
-{  
-  PlaySpace::PlaySpace(const Pieces &Pieces, const Locations &Locations, size_t Width, size_t Height)
+{
+  Move::Move(Location Square, Piece Piece, std::string Required_Input) : Dialog::Option<Move*>(this, " ", Required_Input)
   {
+    name = " ";
+    required_input = Required_Input;
+    selection = this;
+    piece = Piece;
+    square = Square;
+  }
+
+  void Move_Select::Print_List(void)
+  {
+    //Do nothing
+  }
+
+  GameState::GameState(const Pieces &Pieces, const Locations &Locations, size_t BoardSize, bool ai)
+  {
+    Active_AI = ai;
     pieces = &Pieces;
     locations = &Locations;
-
-    width = Width;
-    height = Height;
-
-    undo = "Undo:z";
-    redo = "Redo:y";
-    removeUndoRedo = "      ";
-  }
-
-  void PlaySpace::Setup_Display()
-  {
-    display.resize(height * width); //Sets display size
-    display.replace(display.begin(), display.end(), display.length(), ' '); //Fills display with whitespace
-
-    Write_Header();
-    Write_Board();
-    Print_PlaySpace();
-  }
-
-  void PlaySpace::Print_PlaySpace()
-  {
-    for(size_t i = 0; i < display.length(); i+= (size_t)width)
-      {
-         std::cout << display.substr(i, (size_t)width) << std::endl;
-      }
-  }
-
-  void PlaySpace::Write_UndoRedo(bool un, bool re) // LOL THIS IS SO BAD, PLEASE FIX ME
-  {
-    if(un)
-    {
-      display.replace(Get_Coordinate(locations->Redo), redo.length(), redo);
-    }
-    else
-    {
-      display.replace(Get_Coordinate(locations->Undo), removeUndoRedo.length(), removeUndoRedo);
-    } 
-  }
-
-  GameState::GameState(const Pieces &Pieces, const Locations &Locations, size_t BoardSize)
-  {
-    pieces = &Pieces;
-    locations = &Locations;
+    turns.clear();
     board.resize(BoardSize, pieces->Blank);
+    turn_number = 0;
+
     Setup_Board();
   }
 
@@ -89,10 +64,10 @@ namespace Game
     std::vector<Move> update;
     if(Active_AI)
     {
-      update.push_back(Move(turns[turn_number].square, pieces->Blank));
+      update.push_back(Move(turns[turn_number].square, pieces->Blank, " "));
       turn_number--;
     }
-    update.push_back(Move(turns[turn_number].square, pieces->Blank));
+    update.push_back(Move(turns[turn_number].square, pieces->Blank, " "));
     turn_number--;
     return update;
   }
@@ -109,17 +84,60 @@ namespace Game
     turn_number++;
     return update;
   }
-
-  Move::Move(Location Square, Piece Piece)
+/*
+  Move AI::Either(Move& a, Move& b)
   {
-    selection = this;
-    piece = Piece;
-    square = Square;
+
   }
 
-  void Move_Select::Print_List(void)
+  Move AI::Open_Space(void)
   {
-    //Do nothing
+
+  }
+*/
+  PlaySpace::PlaySpace(const Pieces &Pieces, const Locations &Locations, size_t Width, size_t Height)
+  {
+    pieces = &Pieces;
+    locations = &Locations;
+
+    width = Width;
+    height = Height;
+
+    undo = "Undo:z";
+    redo = "Redo:y";
+    removeUndoRedo = "      ";
+
+    Setup_Display();
+  }
+
+  void PlaySpace::Setup_Display()
+  {
+    this->display.resize(height * width); //Sets display size
+    this->display.replace(this->display.begin(), this->display.end(), this->display.length(), ' '); //Fills display with whitespace
+
+    this->Write_Header();
+    this->Write_Board();
+    this->Print_PlaySpace();
+  }
+
+  void PlaySpace::Print_PlaySpace()
+  {
+    for(size_t i = 0; i < this->display.length(); i+= (size_t)this->width)
+      {
+         std::cout << this->display.substr(i, (size_t)this->width) << std::endl;
+      }
+  }
+
+  void PlaySpace::Write_UndoRedo(bool un, bool re) // LOL THIS IS SO BAD, PLEASE FIX ME
+  {
+    if(un)
+    {
+      display.replace(Get_Coordinate(locations->Redo), redo.length(), redo);
+    }
+    else
+    {
+      display.replace(Get_Coordinate(locations->Undo), removeUndoRedo.length(), removeUndoRedo);
+    } 
   }
 
   Turn_Dialog::Turn_Dialog(Move_Select &move_select)
@@ -135,28 +153,28 @@ namespace Game
     dialog = &Dialog;
   }
 
-  Move* Turn::AI(void)
+  Move Turn::AI(void)
   {
     return ai->Turn();
   }
 
-  Move* Turn::Player(void) 
+  Move Turn::Player(void) 
   {
     dialog->Prompt(dialog->move_prompt.length(), dialog->move_prompt);
     return dialog->select->Select();
   }
 
-  Player::Player(std::string name, bool ai)
+  Player::Player(std::string Name, bool ai) : Dialog::Option<Player*>(this, Name, " ")
   {
-    Name = name;
+    name = Name;
     CPU = ai;
     score = 0;
   }
 
-  newPlayer::newPlayer()
+  New_Player::New_Player()
   {
-    Name = "New Player";
-    Required_Input = "0";
+    name = "New Player";
+    required_input = "0";
     CPU = false;
     score = 0;
     selection = NULL;
@@ -166,6 +184,7 @@ namespace Game
   {
     ai_available = ai;
     masterlist = &ClientList;
+    currentplayers->clear();
   }
 
   Player* Player_Select::Add_Player(Player newPlayer)
@@ -176,7 +195,7 @@ namespace Game
 
   void Player_Select::Generate_List(void)
   {
-    Options.push_back(newPlayer()); // Sets New Player as an option 
+    Options.push_back(New_Player()); // Sets New Player as an option 
 
     for(int i = 0; i < masterlist->size(); i++)
     {
@@ -184,7 +203,7 @@ namespace Game
       {
         for(int j = 0; j < currentplayers->size(); j++)
         {
-          if((*currentplayers)[j]->Name == (*masterlist)[i].Name){break;} //if player name is already active
+          if((*currentplayers)[j]->name == (*masterlist)[i].name){break;} //if player name is already active
           if(j >= Options.size() - 1) //if end of list is reached
           {
             Options.push_back((*masterlist)[i]);
@@ -205,33 +224,30 @@ namespace Game
     Round_Tie = "";
   }
 
-  std::vector<Player*> BaseDialog::Select_Players(int num_players)
+  void BaseDialog::Select_Players(int num_players)
   {
-    std::vector<Player*> Current_Players;
-
-    for(int i = 0; i < num_players; i++)
+    while(currentplayers->size() < num_players)
     {
-      Player* player = playerselect->Select(); 
-      if(!player)
+      Player* player = playerselect->Select().On_Select(); 
+      if(!player->selection)
       {
         Player_Setup();
       }
-      Current_Players.push_back(player);
+      currentplayers->push_back(player);
     }
-    return Current_Players;
   }
 
-  void BaseDialog::Player_Setup(void)
+  Player* BaseDialog::Player_Setup(void)
   {
     std::string PlayerName;
     bool PlayerAI;
 
-    Prompt(newPlayer_Name.size(), newPlayer_Name);
+    Prompt(this->newPlayer_Name.size(), this->newPlayer_Name);
     std::cin >> PlayerName;
 
-    Prompt(newPlayer_Ai.size(), newPlayer_Ai);
-    PlayerAI = YesNo->Select()->On_Select();
+    Prompt(this->newPlayer_Ai.size(), this->newPlayer_Ai);
+    PlayerAI = YesNo->Select().On_Select();
 
-    playerselect->Add_Player(Player(PlayerName, PlayerAI));
+    return playerselect->Add_Player(Player(PlayerName, PlayerAI));
   }
 }

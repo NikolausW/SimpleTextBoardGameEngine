@@ -2,25 +2,12 @@
 
 namespace Dialog
 {
-  Base::Base(void)
+  template <class T>
+  Option<T>::Option(T Selection, std::string Name, std::string Required_Input)
   {
-    YesNo = YesNo_Select::Get_Instance();
-  }
-
-  void Base::Prompt(size_t width, std::string str)
-  {
-    for(size_t i = 0; i < str.length(); i += width)
-    {
-      std::cout << str.substr(i, width); // << std::endl;
-    }
-  }
-
-  void Base::Clear_Screen()
-  {
-    for(int i = 50; i > 0; i--)
-    {
-      std::cout << "\n";
-    }
+    name = Name;
+    required_input = Required_Input;
+    selection = Selection;
   }
 
   template <class T>
@@ -34,47 +21,24 @@ namespace Dialog
   {
     return selection;
   }
-/*
-  template <class T>
-  Option_Select<T>::Option_Select()
-  {
-    Generate_List();
-  }
-*/
-  template <class T>
-  T* Option_Select<T>::Select()
-  {
-    T* selection;
 
+  template <class T>
+  T Option_Select<T>::Select()
+  {
+    // Generate_List, should this have a conditional to only run once if needed?
     if(Options.size() == 1)
     {
-      selection = &Options[0];
+      return Options[0];
     }
     else
     {
       Print_List();
       while(!Validate_Input(Take_Input()))
         ; // do nothing
-      selection = Process_Input();
+      return Process_Input();
     }
     return selection;
   };
-
-  template <class T>
-  void Option_Select<T>::Select(T& selection)
-  {
-    if(Options.size() == 1)
-    {
-      Options[0]->On_Select(option);
-    }
-    else
-    {
-      Print_List();
-      while(!Validate_Input(Take_Input()))
-        ; // do nothing
-      Process_Input()->On_Select(option);
-    }    
-  }
 
   template <class T>
   void Option_Select<T>::Print_List() 
@@ -109,27 +73,27 @@ namespace Dialog
   {
     std::string input;
     getline(std::cin, input);
-    input.resize(Input_Length); // If input too short could have it fill in with a character
+    input.resize(this->input_length); // If input too short could have it fill in with a character
     return input;
   }
 
   template <class T>
-  bool Option_Select<T>::Validate_Input(std::string input)
+  bool Option_Select<T>::Validate_Input(std::string& input)
   {
-    for(int i = 0; i < Options.size(); i++)
+    for(int i = 0; i < this->Options.size(); i++)
     {
       try
       {
-        if(input == Options[i].Required_Input)
+        if(input == this->Options[i].required_input)
         {
-          if(!Options[i].Conditional())
+          if(!this->Options[i].Conditional())
           {
             return false;
           }
           else
           {
-            return true;
-            User_Input = input;
+            this->user_input = input;
+            return true;            
           }        
         }
       }
@@ -146,27 +110,13 @@ namespace Dialog
   {
     for(int i = 0; i < Options.size(); i++)
     {
-      if(User_Input == Options[i].Required_Input)
+      if(this->user_input == this->Options[i].required_input)
       {
         return &Options[i];
       }
     }
     std::cout << "Error: Validated Input Not Found";
     abort();
-  }
-
-  YesNo_Option::YesNo_Option(bool YN) 
-  {
-    if(YN)
-    {
-      Name = "Yes"; 
-      Required_Input = "y";
-    }
-    else 
-    {
-      Name = "No"; 
-      Required_Input = "n";
-    }
   }
 
   YesNo_Select* YesNo_Select::Get_Instance()
@@ -183,9 +133,9 @@ namespace Dialog
     std::cout << Generate_Option_String(&Options[0]) << " / " << Generate_Option_String(&Options[1]) << "? :";
   }
 
-  std::string YesNo_Select::Generate_Option_String(YesNo_Option* option)
+  std::string YesNo_Select::Generate_Option_String(Option<bool>* option)
   {
-    if(option->Required_Input == "y")
+    if(option->required_input == "y")
     {
       return "Yes(y)";
     }
@@ -197,13 +147,34 @@ namespace Dialog
 
   void YesNo_Select::Generate_List()
   {
-    Options.push_back(YesNo_Option(true));
-    Options.push_back(YesNo_Option(false));
+    Options.push_back(Option(true, "Yes", "y"));
+    Options.push_back(Option(true, "No", "n"));
   }
 
   YesNo_Select::YesNo_Select()
   {
-    Input_Length = 1;
-    Generate_List();
+    input_length = 1;
+    Generate_List(); // likely remove this
+  }
+
+  Base::Base(void)
+  {
+    YesNo = YesNo_Select::Get_Instance();
+  }
+
+  void Base::Prompt(size_t width, std::string str)
+  {
+    for(size_t i = 0; i < str.length(); i += width)
+    {
+      std::cout << str.substr(i, width); // << std::endl;
+    }
+  }
+
+  void Base::Clear_Screen()
+  {
+    for(int i = 50; i > 0; i--)
+    {
+      std::cout << "\n";
+    }
   }
 }
