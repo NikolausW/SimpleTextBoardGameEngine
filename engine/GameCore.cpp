@@ -2,9 +2,16 @@
 
 namespace Game
 {
-  Base::Base(GameData& data)
+  Base::Base(void)
   {
-    
+    locations = NULL;
+    pieces = NULL;
+    player_count = 0;
+    players.clear();
+    gamestate = NULL;
+    playspace = NULL;
+    turn = NULL;
+    dialog = NULL;
   }
 
   void Base::Game_Loop(void)
@@ -40,7 +47,7 @@ namespace Game
     return gamestate->turn_number % player_count;
   }
 
-  void Base::Process_Move(Move* move)
+  void Base::Process_Move(Move move)
   {
     std::vector<Move> updates = gamestate->Update(move);
 
@@ -56,14 +63,14 @@ namespace Game
     {
       Player* winner = players[Player_X_Turn()];
       winner->score++;
-      //dialog->Prompt(); WINNER ANNOUNCEMENT
+      dialog->Prompt(dialog->Round_Winner.length(), dialog->Round_Winner); 
     }
     else
     {
-      //dialog prompt tie CATS GAME
+      dialog->Prompt(dialog->Round_Tie.length(), dialog->Round_Tie);
     }
-    //std::cout << "Would you like to play again?" << std::endl; //Change this to a prompt
-    Play_Again(dialog->YesNo->Select());
+    dialog->Prompt(dialog->Play_Again.length(), dialog->Play_Again);
+    Play_Again(dialog->YesNo->Select().On_Select());
   }
 
   void Base::Play_Again(bool again) //REFACTOR THIS

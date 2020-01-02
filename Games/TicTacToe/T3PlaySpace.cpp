@@ -2,7 +2,7 @@
 
 namespace TicTacToe
 {
-  TTT_PlaySpace::TTT_PlaySpace(void)
+  TTT_PlaySpace::TTT_PlaySpace(const Game::Pieces &Pieces, const Game::Locations &Locations) : Game::PlaySpace(Pieces, Locations)
   {
   //Dimensions of PlaySpace
     height = 15;

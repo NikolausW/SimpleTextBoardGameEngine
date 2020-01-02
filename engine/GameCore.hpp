@@ -12,9 +12,9 @@ namespace Game
   class Base
   {
     public:
-      Base(GameData& data);
-      const Locations* locations;
-      const Pieces* pieces;
+      Base(void);  
+      const Locations& locations;
+      const Pieces& pieces;
       virtual void Game_Loop(void);
     protected:
       int player_count;
@@ -27,11 +27,9 @@ namespace Game
       virtual bool Round_Over(void); // Checks if Round is over  
       virtual void Execute_Turn(void); 
       virtual size_t Player_X_Turn(void); // Returns size_t current player turn number
-      virtual void Process_Move(Move* move);
+      virtual void Process_Move(Move move);
       virtual void Round_End(void); // Prompts Play Again, Could be moved to dialog instance
-      virtual void Play_Again(bool again); // Resets gamestate and calls another game loop
-    private:
-      Base();    
+      virtual void Play_Again(bool again); // Resets gamestate and calls another game loop  
   };
 }
 #endif

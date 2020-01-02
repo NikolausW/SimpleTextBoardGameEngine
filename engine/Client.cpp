@@ -25,7 +25,7 @@ namespace Client
   {
     currentgame = NULL; // replace this with proper destructor
     std::cout << "Would you like to play another game?" << std::endl; //replace with dialog
-    if(dialog.YesNo->Select())
+    if(dialog.YesNo->Select().On_Select())
     {
       currentgame = new Game::Base(gamedata);
     }

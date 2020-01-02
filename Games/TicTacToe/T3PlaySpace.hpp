@@ -12,6 +12,7 @@ namespace TicTacToe
   class TTT_PlaySpace : public Game::PlaySpace
   {
     public:
+      TTT_PlaySpace(const Game::Pieces &Pieces, const Game::Locations &Locations);
       //Locations locations;
       //Pieces pieces;
       void Write_Piece(Game::Location location, Game::Piece piece);

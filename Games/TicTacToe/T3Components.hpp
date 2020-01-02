@@ -37,13 +37,14 @@ namespace TicTacToe
   
   class TTT_GameState : public Game::GameState
   {
-    TTT_GameState();
-    //int turn number;
-    //std::vector<Move*> turns;
-    //std::vector<const int> board;
-    bool Round_Won(void);
-    bool Round_Tie(void);    
-    void Reset(void);
+    public:
+      TTT_GameState(const Game::Pieces &Pieces, const Game::Locations &Locations, size_t BoardSize, bool ai);
+      //int turn number;
+      //std::vector<Move*> turns;
+      //std::vector<const int> board;
+      bool Round_Won(void);
+      bool Round_Tie(void);    
+      void Reset(void);
   };
 
 /*
@@ -54,7 +55,7 @@ namespace TicTacToe
       //Move* On_Select(void) BASE IMPLEMENATION
       //int square
   };
-
+*/
   class TTT_Move_Select : public Game::Move_Select 
   {
     public:
@@ -63,7 +64,7 @@ namespace TicTacToe
       //void Print_List(void); BASE IMPLEMENTATION
       void Generate_List(void); //This will probably require a unique constructor
   };
-
+/*
   class TTT_Turn : public Game::Turn
   {
     public:
@@ -77,7 +78,7 @@ namespace TicTacToe
   class TTT_Dialog : public Game::BaseDialog
   {
     public:
-      TTT_Dialog(void);
+      TTT_Dialog(Game::Player_Select& PlayerSelect);
       //Game::Player Game::PlayerSelect //Base Implementation
       //Game::Player Player_Setup(void); //Base Implementation if used at all?
       //std::string newPlayer_Name,

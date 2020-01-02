@@ -45,7 +45,7 @@ namespace Dialog
   {
     public:
       static YesNo_Select* Get_Instance();
-      // YesNo_Option* Select(void);
+      // Option<bool>* Select(void);
     protected:
       // int input_length;
       // std::string User_Input(void);

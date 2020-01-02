@@ -14,12 +14,12 @@ namespace TicTacToe
   class TTT : public Game::Base
   {
     public:
-      // TTT(); //Constructor
+      TTT(std::vector<Game::Player>& GlobalPlayerList); //Constructor
       //Locations locations;
       //Pieces pieces;
       //virtual void Game_Loop(void) BASE IMPLEMENTATION
     protected:
-      //num_players = 2
+      //player_count = 2
       //players vector
       //GameState* gamestate
       //PlaySpace* playspace when implemented 
@@ -28,7 +28,7 @@ namespace TicTacToe
 
       //bool Round_Over(void) BASE IMPLEMENTATION
       //void Execute_Turn(void) BASE IMPLEMENTATIO
-      // void Process_Move(Game::Move* move);
+      //void Process_Move(Game::Move* move);
       //size_t Player_X_Turn(void) BASE IMPLEMENTATION
       //void Round_End(void) BASE IMPLEMENTATION
       //void Play_Again(bool again) BASE IMPLEMENTATION

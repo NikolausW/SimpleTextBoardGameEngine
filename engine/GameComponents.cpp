@@ -28,21 +28,21 @@ namespace Game
     Setup_Board();
   }
 
-  std::vector<Move> GameState::Update(Move* move)
+  std::vector<Move> GameState::Update(Move& move)
   {
     std::vector<Move> updates;
 
-    if(move->piece)
+    if(move.piece)
     {
-      board.erase(board.begin() + (move->square - 1));
-      board.insert(board.begin() + (move->square - 1), move->piece);
-      turns.resize(turn_number, *move);
+      board.erase(board.begin() + (move.square - 1));
+      board.insert(board.begin() + (move.square - 1), move.piece);
+      turns.resize(turn_number, move);
       turn_number++;
       updates.push_back(turns.back());
     }
     else
     {
-      if(move->square == locations->Undo)
+      if(move.square == locations->Undo)
       {
         updates = Undo();
       }
@@ -84,6 +84,11 @@ namespace Game
     turn_number++;
     return update;
   }
+
+  AI::AI(GameState& Gamestate)
+  {
+    gamestate = &Gamestate;
+  }
 /*
   Move AI::Either(Move& a, Move& b)
   {
@@ -95,13 +100,13 @@ namespace Game
 
   }
 */
-  PlaySpace::PlaySpace(const Pieces &Pieces, const Locations &Locations, size_t Width, size_t Height)
+  PlaySpace::PlaySpace(const Pieces &Pieces, const Locations &Locations)
   {
     pieces = &Pieces;
     locations = &Locations;
 
-    width = Width;
-    height = Height;
+    width = 0;
+    height = 0;
 
     undo = "Undo:z";
     redo = "Redo:y";
@@ -222,6 +227,8 @@ namespace Game
     Play_Again = "";
     Round_Winner = "";
     Round_Tie = "";
+
+    YesNo = Dialog::YesNo_Select::Get_Instance();
   }
 
   void BaseDialog::Select_Players(int num_players)

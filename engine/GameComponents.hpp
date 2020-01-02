@@ -63,7 +63,7 @@ namespace Game
       GameState(const Pieces &Pieces, const Locations &Locations, size_t BoardSize, bool ai);
       int turn_number;
       bool Active_AI; // If a current player is AI THIS SHOULD LIKELY BE CONST
-      virtual std::vector<Move> Update(Move* move); // Updates Gamestate
+      virtual std::vector<Move> Update(Move& move); // Updates Gamestate
       virtual bool Round_Won(void) = 0; // Checks if Round is won
       virtual bool Round_Tie(void) = 0; // Checks if the Round results in a tie
       virtual void Reset(void) = 0; // Resets gamestate
@@ -83,10 +83,10 @@ namespace Game
   class AI
   {
     public:
-      //AI(Gamestate& GameState); // Need to pass in the proper gamestate
+      AI(GameState& Gamestate); // Need to pass in the proper gamestate
       virtual Move Turn(void) = 0; 
     protected:
-      //Gamestate* gamestate; // For AI to reference the current gamestate
+      GameState* gamestate; // For AI to reference the current gamestate
       virtual Move Either(Move& a, Move& b); // Need to implement
       virtual Move Open_Space(void); // Need to implement
   };
@@ -94,7 +94,7 @@ namespace Game
   class PlaySpace 
   {  
     public:
-      PlaySpace(const Pieces &Pieces, const Locations &Locations, size_t Width, size_t Height);
+      PlaySpace(const Pieces &Pieces, const Locations &Locations);
       const Pieces* pieces;
       const Locations* locations;
       void Setup_Display(void); // Writes Header and Board and then Prints Playspace
@@ -199,7 +199,6 @@ namespace Game
 
   class BaseDialog : protected Dialog::Base 
   {
-    //Need to include strings for Again Prompt, Round Winner, and Round Tie
     public:
       BaseDialog(Player_Select& PlayerSelect);  
       Player_Select* playerselect;
@@ -213,9 +212,9 @@ namespace Game
 
       virtual void Select_Players(int num_players);
       Player* Player_Setup(void); //calls the player constructor returnin a new player object
-      // virtual void Prompt(size_t width, std::string str);
-      // YesNo_Select* YesNo;
-      // virtual void Clear_Screen(void);
+      virtual void Prompt(size_t width, std::string str);
+      Dialog::YesNo_Select* YesNo;
+      virtual void Clear_Screen(void);
     private:
       BaseDialog();
   };

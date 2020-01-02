@@ -2,7 +2,7 @@
 
 namespace TicTacToe
 {
-  TTT_GameState::TTT_GameState()
+  TTT_GameState::TTT_GameState(const Game::Pieces &Pieces, const Game::Locations &Locations, size_t BoardSize, bool ai) : Game::GameState(Pieces, Locations, BoardSize, ai)
   {
     Reset();  
   }
@@ -11,7 +11,7 @@ namespace TicTacToe
   {
     if(turn_number > 4)
     {
-      int LastMove = turns[turn_number - 1]->square;
+      int LastMove = turns[turn_number - 1].square;
       int LastPiece = board[LastMove - 1];
 
       switch(LastMove)
@@ -48,8 +48,12 @@ namespace TicTacToe
     // How should I go about generating a list of possible moves?
   }
 
-  TTT_Dialog::TTT_Dialog(void)
+  TTT_Dialog::TTT_Dialog(Game::Player_Select& PlayerSelect) : Game::BaseDialog(PlayerSelect)
   {
-
+    newPlayer_Name = "";
+    newPlayer_Ai = "";
+    Play_Again = "";
+    Round_Winner = "";
+    Round_Tie = "";
   }
 }
