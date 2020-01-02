@@ -16,7 +16,7 @@ namespace Game
   {
     public: // Silly because structs by default are public
       const static Location Undo = 1000,
-                     Redo = 1001;
+                            Redo = 1001;
       virtual ~Locations() = 0;
       //Should all games be forced to include Header components?
   };

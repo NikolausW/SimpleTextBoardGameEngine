@@ -14,7 +14,7 @@ namespace TicTacToe
   class TTT : public Game::Base
   {
     public:
-      TTT(); //Constructor
+      // TTT(); //Constructor
       //Locations locations;
       //Pieces pieces;
       //virtual void Game_Loop(void) BASE IMPLEMENTATION
@@ -28,7 +28,7 @@ namespace TicTacToe
 
       //bool Round_Over(void) BASE IMPLEMENTATION
       //void Execute_Turn(void) BASE IMPLEMENTATIO
-      void Process_Move(Game::Move* move);
+      // void Process_Move(Game::Move* move);
       //size_t Player_X_Turn(void) BASE IMPLEMENTATION
       //void Round_End(void) BASE IMPLEMENTATION
       //void Play_Again(bool again) BASE IMPLEMENTATION

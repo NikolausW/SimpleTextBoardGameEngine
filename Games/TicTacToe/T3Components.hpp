@@ -46,6 +46,7 @@ namespace TicTacToe
     void Reset(void);
   };
 
+/*
   class TTT_Move : public Game::Move // Will probably remove this, it's not unique
   {
     public:
@@ -72,7 +73,7 @@ namespace TicTacToe
       //Move* AI(void); //Base Implementation
       //Move* Player(void); //Base Implementation 
   };
-
+*/
   class TTT_Dialog : public Game::BaseDialog
   {
     public:

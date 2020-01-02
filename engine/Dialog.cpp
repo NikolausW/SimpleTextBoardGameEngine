@@ -7,7 +7,7 @@ namespace Dialog
     YesNo = YesNo_Select::Get_Instance();
   }
 
-  void Base::Prompt(size_t width, std::string str) const
+  void Base::Prompt(size_t width, std::string str)
   {
     for(size_t i = 0; i < str.length(); i += width)
     {
@@ -15,7 +15,7 @@ namespace Dialog
     }
   }
 
-  void Base::Clear_Screen() const
+  void Base::Clear_Screen()
   {
     for(int i = 50; i > 0; i--)
     {
@@ -34,13 +34,13 @@ namespace Dialog
   {
     return selection;
   }
-
+/*
   template <class T>
   Option_Select<T>::Option_Select()
   {
     Generate_List();
   }
-
+*/
   template <class T>
   T* Option_Select<T>::Select()
   {
@@ -61,7 +61,7 @@ namespace Dialog
   };
 
   template <class T>
-  void Option_Select<T>::Select(T& option)
+  void Option_Select<T>::Select(T& selection)
   {
     if(Options.size() == 1)
     {

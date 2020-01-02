@@ -12,9 +12,9 @@
 
 namespace Game
 {
-  enum GameList
+  enum Games
   {
-    Tic_Tac_Toe
+    TicTacToe
   };
 
   struct GameData
@@ -22,7 +22,9 @@ namespace Game
     GameData();
     int PlayerCount = 0;
     size_t Board_Width = 0, 
-           Board_Height = 0;
+           Board_Height = 0,
+           Display_Width = 0,
+           Display_Height = 0;
     Locations* locations = NULL;
     Pieces* pieces = NULL;
     BaseDialog* GameDialog = NULL;
@@ -37,17 +39,23 @@ namespace Game
   class Option : public Dialog::Option<GameData>
   {
     public:
+      Option(std::string GameName, Games GameType);
       // std::string Name,
       //             Required_Input;
+      Games game;
       // bool Conditional(void);
       void On_Select(GameData& option); 
       // GameData selection; // by default will be empty
+    private:
+      Option();
   };
   
   std::vector<Game::Option> GameList; // Simply the list of available game, keeps generated games in scope by storing it here
   void PopulateGameList(std::vector<Game::Option>& gamelist);
 
   //If you want to add a new game type add line to populate game options function in GamesList.cpp
+
+  
 }
 
 #endif

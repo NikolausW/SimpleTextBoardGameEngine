@@ -12,14 +12,13 @@ namespace TicTacToe
   class TTT_PlaySpace : public Game::PlaySpace
   {
     public:
-      TTT_PlaySpace(); //Constructor
       //Locations locations;
       //Pieces pieces;
-      void Write_Piece(const int location, const int piece);
-      //virtual void Setup_Display(void) BASE IMPLEMENTATION
-      //virtual void Print_PlaySpace(void) BASE IMPLEMENTATION
+      void Write_Piece(Game::Location location, Game::Piece piece);
+      //void Setup_Display(void) BASE IMPLEMENTATION
+      //void Print_PlaySpace(void) BASE IMPLEMENTATION
       void New_Game(void); //Called by game reset
-      //virtual void Write_UndoRedo(bool un, bool re) BASE IMPLEMENTATION
+      //void Write_UndoRedo(bool un, bool re) BASE IMPLEMENTATION
     protected:
       //size_t height, width;  
       
@@ -27,7 +26,7 @@ namespace TicTacToe
       void Write_Header(void);
       void Write_Board(void);
       void Clear_Board(void);
-      size_t Get_Coordinate(const int location);
+      size_t Get_Coordinate(Game::Location location);
     private:
       //visual Assets
       std::string Player1Score,
@@ -41,9 +40,11 @@ namespace TicTacToe
       //Unique Methods
       void Setup_Circle(void);
       void Setup_Cross(void);
-      void Write_Blank(const int location);
-      void Write_Circle(const int location);
-      void Write_Cross(const int location);
+      void Write_Blank(Game::Location location);
+      void Write_Circle(Game::Location location);
+      void Write_Cross(Game::Location location);
+
+      TTT_PlaySpace(); //B A N N E D
   };
 }
 #endif

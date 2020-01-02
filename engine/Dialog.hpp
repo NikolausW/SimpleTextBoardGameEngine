@@ -24,20 +24,21 @@ namespace Dialog
   class Option_Select
   {
     public:
-      Option_Select();
+      // Option_Select(); // Should this be private?
+      // Constructor for passing in list of options?
       virtual T* Select(void); //Kicks off below methods and returns a pointer to the user selected option
-      virtual void Select(T& option); // THIS MIGHT NOT BE NEEDED?
+      virtual void Select(T& option); // THIS MIGHT NOT BE NEEDED? Probably not needed
     protected:
-      int Input_Length; // maybe make this const
-      std::string User_Input; 
+      int Input_Length; // expected input length
+      // std::string User_Input; // Likely delete this
       std::vector<T> Options; //List of Options to be selected from
 
       virtual void Print_List(void); //Prints Options
       virtual std::string Generate_Option_String(T* option); //Constructs the strings that print list will print 
-      virtual std::string Take_Input(void); //Simply takes the input from user
-      virtual bool Validate_Input(std::string input); //Validates received input
-      virtual T* Process_Input(void); // Translates validated input to an Option
-      virtual void Generate_List(void) = 0; // This should generate User_Input if it creates the options itself
+      std::string Take_Input(void); //Simply takes the input from user
+      bool Validate_Input(std::string input); //Validates received input
+      T* Process_Input(void); // Translates validated input to an Option
+      virtual void Generate_List(void) = 0; // This should generate Required_Input if it creates the options itself
   };
 
   class YesNo_Option : public Option<bool>
@@ -61,12 +62,12 @@ namespace Dialog
       // std::string User_Input(void);
       // std::vector<YesNo_Option> Options;
 
-      void Print_List(void);
-      std::string Generate_Option_String(YesNo_Option* option);
+      virtual void Print_List(void);
+      virtual std::string Generate_Option_String(YesNo_Option* option);
       // std::string Take_Input(void);
       // bool Validate_Input(std::string input);
       // YesNo_Option* Process_Input(void);
-      void Generate_List(void);
+      virtual void Generate_List(void);
     private:
       YesNo_Select();
       static YesNo_Select* Instance;
@@ -76,9 +77,9 @@ namespace Dialog
   {
     public:
       Base();
-      virtual void Prompt(size_t width, std::string str) const;
+      void Prompt(size_t width, std::string str);
       YesNo_Select* YesNo;
-      virtual void Clear_Screen(void) const;  
+      void Clear_Screen(void);  
   };
 }
 #endif
