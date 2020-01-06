@@ -2,7 +2,7 @@
 
 namespace Game
 {
-  Base::Base(void)
+  Base::Base(std::vector<Player> Client_List)
   {
     locations = NULL;
     pieces = NULL;
@@ -12,6 +12,32 @@ namespace Game
     playspace = NULL;
     turn = NULL;
     dialog = NULL;
+  }
+
+  Base::Base(int Player_Count, const Pieces& Pieces, const Locations& Locations, GameState& Gamestate, PlaySpace& Playspace, Turn& Turn, BaseDialog& Dialog, std::vector<Player>& Client_List)
+  {
+    // Set Game's player count
+      player_count = Player_Count;
+
+    // Setup Pieces_List and Locations_List
+      pieces = &Pieces;
+      locations = &Locations;
+
+    // Setup Game's Dialog
+      dialog = &Dialog; // needs Player_Select, AI_Available, and Client Player list
+
+    // Select Players
+      players.clear();
+      dialog->Select_Players(player_count);
+
+    // Setup Game_State   
+      gamestate = &Gamestate; // needs Pieces_List and Locations_List
+
+    // Setup Playspace
+      playspace = &Playspace; // needs Pieces_List and Locations_List
+
+    // Setup Turn_Logic
+      turn = &Turn; // Needs gamestate
   }
 
   void Base::Game_Loop(void)

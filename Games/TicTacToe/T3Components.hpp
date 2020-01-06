@@ -38,47 +38,34 @@ namespace TicTacToe
   class TTT_GameState : public Game::GameState
   {
     public:
-      TTT_GameState(const Game::Pieces &Pieces, const Game::Locations &Locations, size_t BoardSize, bool ai);
+      enum Status{Won, Winnable, Undecided, Unwinnable};
+      TTT_GameState();
       //int turn number;
       //std::vector<Move*> turns;
       //std::vector<const int> board;
       bool Round_Won(void);
       bool Round_Tie(void);    
       void Reset(void);
+      Status Square_Status(const Game::Location square);
+      Status Row_Status(const int Row_Number);
+      Status Column_Status(const int Column_Number);
+      Status Diagnol_Status(const int Diagnol_Number);
   };
 
-/*
-  class TTT_Move : public Game::Move // Will probably remove this, it's not unique
-  {
-    public:
-      TTT_Move(int sq);
-      //Move* On_Select(void) BASE IMPLEMENATION
-      //int square
-  };
-*/
   class TTT_Move_Select : public Game::Move_Select 
   {
     public:
+      TTT_Move_Select();
       //Move* Select(void); ??? BASE BASE IMPLEMENTATION???
     protected:
       //void Print_List(void); BASE IMPLEMENTATION
       void Generate_List(void); //This will probably require a unique constructor
   };
-/*
-  class TTT_Turn : public Game::Turn
-  {
-    public:
-      TTT_Turn(void);
-      //AI* ai;
-      //Game::Turn_Dialog dialog; //Base Implementation
-      //Move* AI(void); //Base Implementation
-      //Move* Player(void); //Base Implementation 
-  };
-*/
+
   class TTT_Dialog : public Game::BaseDialog
   {
     public:
-      TTT_Dialog(Game::Player_Select& PlayerSelect);
+      TTT_Dialog(std::vector<Game::Player>& Client_List);
       //Game::Player Game::PlayerSelect //Base Implementation
       //Game::Player Player_Setup(void); //Base Implementation if used at all?
       //std::string newPlayer_Name,

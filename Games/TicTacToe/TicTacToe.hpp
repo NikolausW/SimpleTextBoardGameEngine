@@ -14,7 +14,7 @@ namespace TicTacToe
   class TTT : public Game::Base
   {
     public:
-      TTT(std::vector<Game::Player>& GlobalPlayerList); //Constructor
+      TTT(std::vector<Game::Player>& Client_List); //Constructor
       //Locations locations;
       //Pieces pieces;
       //virtual void Game_Loop(void) BASE IMPLEMENTATION

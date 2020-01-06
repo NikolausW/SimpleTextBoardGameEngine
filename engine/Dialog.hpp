@@ -14,10 +14,10 @@ namespace Dialog
   {
     public:
       explicit Option(T Selection, std::string Name, std::string Required_Input);
-      std::string name,
-                  required_input;  
+      std::string name = "",
+                  required_input = "";  
       virtual bool Conditional(void); // by default the option is always allowed
-      virtual T On_Select(void); // can maybe get rid of this method? If all it does is return selection
+      virtual T On_Select(void); 
       T selection; // What the option returns
   };
 
@@ -25,12 +25,11 @@ namespace Dialog
   class Option_Select
   {
     public:
-      // Option_Select(); // Should this be private?
+      explicit Option_Select(int Input_Length);
       virtual T Select(void); //Kicks off below methods and returns a pointer to the user selected option
-      // virtual void Select(T& option); // THIS MIGHT NOT BE NEEDED? Probably not needed
     protected:
-      int input_length; // expected input length
-      std::string user_input;
+      int input_length = 0; // expected input length
+      std::string user_input = "";
       std::vector<T> Options; //List of Options to be selected from
 
       virtual void Print_List(void); //Prints Options
@@ -48,7 +47,7 @@ namespace Dialog
       // Option<bool>* Select(void);
     protected:
       // int input_length;
-      // std::string User_Input(void);
+      // std::string User_Input;
       // std::vector<Option<bool>> Options;
 
       virtual void Print_List(void);

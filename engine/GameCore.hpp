@@ -12,12 +12,13 @@ namespace Game
   class Base
   {
     public:
-      Base(void);  
-      const Locations& locations;
-      const Pieces& pieces;
+      Base(std::vector<Player> Client_List);
+      Base(int Player_Count, const Pieces& Pieces, const Locations& Locations, GameState& Gamestate, PlaySpace& Playspace, Turn& Turn, BaseDialog& Dialog, std::vector<Player>& Client_List);  
+      const Locations* locations;
+      const Pieces* pieces;
       virtual void Game_Loop(void);
-    protected:
-      int player_count;
+    protected: 
+      int player_count = 0;
       std::vector<Player*> players ; // Players actively in this game instance
       GameState* gamestate; // Current state of the game, updated every turn
       PlaySpace* playspace; // Pointer to Playspace for this game

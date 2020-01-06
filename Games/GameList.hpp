@@ -16,42 +16,23 @@ namespace Game
   {
     TicTacToe
   };
-
-  struct GameData
-  {
-    GameData();
-    int PlayerCount = 0;
-    size_t Board_Width = 0, 
-           Board_Height = 0,
-           Display_Width = 0,
-           Display_Height = 0;
-    Locations* locations = NULL;
-    Pieces* pieces = NULL;
-    BaseDialog* GameDialog = NULL;
-    GameState* Gamestate = NULL;
-    PlaySpace* PlaySpace = NULL;
-    AI* ai = NULL;
-    Turn* Turn = NULL;
-    Turn_Dialog* Turn_Dialog = NULL;
-    Player_Select* PlayerSelect = NULL;
-  };
   
-  class Option : public Dialog::Option<GameData>
+  class Option : public Dialog::Option<Base*>
   {
     public:
-      Option(std::string GameName, Games GameType);
-      // std::string Name,
-      //             Required_Input;
-      Games game;
+      Option(std::string Game_Name, Games Game_Type, std::vector<Game::Player>& Client_List);
+      // std::string name,
+      //             required_input;
+      Games game; //enumeration, I think this could be replaced with Name, enumeration forces uniqueness though
+      std::vector<Player>* client_list; 
       // bool Conditional(void);
-      void On_Select(GameData& option); 
-      // GameData selection; // by default will be empty
+      Base* On_Select(void); 
+      // Base* selection; // by default will be empty
     private:
       Option();
   };
   
-  std::vector<Game::Option> GameList; // Simply the list of available game, keeps generated games in scope by storing it here
-  void PopulateGameList(std::vector<Game::Option>& gamelist);
+  void PopulateGameList(std::vector<Game::Option>& Game_List, std::vector<Player>& Client_List);
 
   //If you want to add a new game type add line to populate game options function in GamesList.cpp
 

@@ -2,22 +2,14 @@
 
 namespace TicTacToe
 {
-  TTT::TTT(std::vector<Game::Player>& GlobalPlayerList)
+  TTT::TTT(std::vector<Game::Player>& Client_List) : Base(player_count, *pieces, *locations, *gamestate, *playspace, *turn, *dialog, Client_List)
   {
-    //Sets the Locations and Pieces
-    locations = new TTT_Locations;
-    pieces = new TTT_Pieces;
     player_count = 2;
-
-    //Sets dialog for Player vector setup
-    dialog = new TTT_Dialog(Game::Player_Select(true, GlobalPlayerList));
-    players.clear();
-    dialog->Select_Players(player_count);
-
-    gamestate = new TTT_GameState(*pieces, *locations, (size_t)9, true);
-
-    playspace = new TTT_PlaySpace(*pieces, *locations);
-
-    turn = new Game::Turn(TTT_AI(*gamestate), TTT_Dialog(TTT_Move_Select()));
+    pieces = new TTT_Pieces;
+    locations = new TTT_Locations;
+    gamestate = new TTT_GameState;
+    dialog = new TTT_Dialog(Client_List);
+    playspace = new TTT_PlaySpace(*locations, *pieces); 
+    turn = new Game::Turn(Client_List);
   }
 }

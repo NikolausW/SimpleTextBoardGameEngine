@@ -2,7 +2,7 @@
 
 namespace Game
 {
-  Move::Move(Location Square, Piece Piece, std::string Required_Input) : Dialog::Option<Move*>(this, " ", Required_Input)
+  Move::Move(Location Square, Piece Piece, std::string Required_Input) : Dialog::Option<Move*>(selection, name, Required_Input)
   {
     name = " ";
     required_input = Required_Input;
@@ -10,17 +10,23 @@ namespace Game
     piece = Piece;
     square = Square;
   }
+  
+  Move_Select::Move_Select(int Input_Length) : Dialog::Option_Select<Game::Move>(Input_Length)
+  {
+    user_input = "";
+    if(!input_length) {input_length = Input_Length;}
+  }
 
   void Move_Select::Print_List(void)
   {
     //Do nothing
   }
 
-  GameState::GameState(const Pieces &Pieces, const Locations &Locations, size_t BoardSize, bool ai)
+  GameState::GameState(Pieces &Pieces, Locations &Locations, size_t BoardSize, bool Active_AI)
   {
-    Active_AI = ai;
-    pieces = &Pieces;
-    locations = &Locations;
+    active_ai = Active_AI;
+    if(!pieces) {pieces = &Pieces;}
+    if(!locations) {locations = &Locations;}
     turns.clear();
     board.resize(BoardSize, pieces->Blank);
     turn_number = 0;
@@ -62,7 +68,7 @@ namespace Game
   std::vector<Move> GameState::Undo(void)
   {
     std::vector<Move> update;
-    if(Active_AI)
+    if(active_ai)
     {
       update.push_back(Move(turns[turn_number].square, pieces->Blank, " "));
       turn_number--;
@@ -75,7 +81,7 @@ namespace Game
   std::vector<Move> GameState::Redo(void)
   {
     std::vector<Move> update;
-    if(Active_AI)
+    if(active_ai)
     {
       update.push_back(turns[turn_number]);
       turn_number++;
@@ -100,17 +106,17 @@ namespace Game
 
   }
 */
-  PlaySpace::PlaySpace(const Pieces &Pieces, const Locations &Locations)
+  PlaySpace::PlaySpace(Pieces &Pieces, Locations &Locations, int Display_Width, int Display_Height)
   {
-    pieces = &Pieces;
-    locations = &Locations;
+    if(!pieces) {pieces = &Pieces;} // will all these need this->????
+    if(!locations) {locations = &Locations;}
 
-    width = 0;
-    height = 0;
+    if(!width) {width = Display_Width;}
+    if(!height) {height = Display_Height;}
 
-    undo = "Undo:z";
-    redo = "Redo:y";
-    removeUndoRedo = "      ";
+    if(undo.empty()) {undo = "Undo:z";}
+    if(redo.empty()) {redo = "Redo:y";}
+    if(removeUndoRedo.empty()) {removeUndoRedo = "      ";}
 
     Setup_Display();
   }
@@ -145,17 +151,19 @@ namespace Game
     } 
   }
 
-  Turn_Dialog::Turn_Dialog(Move_Select &move_select)
+  Turn_Dialog::Turn_Dialog()
   {
-    select = &move_select;
-    move_prompt = "Please make your move: ";
-    invalid = "Invalid input, try again: ";
+    if(!select) {std::cout << "ERROR: NO MOVE SELECT IMPLEMENTED"; abort();}
+    if(move_prompt.empty()) {move_prompt = "Please make your move: ";}
+    if(invalid.empty()) {invalid = "Invalid input, try again: ";}
   }
   
-  Turn::Turn(Game::AI &AI, Turn_Dialog &Dialog)
+  Turn::Turn(std::vector<Game::Player>& Client_List)
   {
-    ai = &AI;
-    dialog = &Dialog;
+    bool ai_implemented = true;
+    if(!ai) {ai = NULL, ai_implemented = false;}
+    if(!dialog) {dialog = new Turn_Dialog();}
+
   }
 
   Move Turn::AI(void)
@@ -185,42 +193,43 @@ namespace Game
     selection = NULL;
   }
 
-  Player_Select::Player_Select(bool ai, std::vector<Player>& ClientList)
+  Player_Select::Player_Select(bool AI_Available, std::vector<Player>& ClientList) : Dialog::Option_Select<Game::PLayer>(input_length)
   {
-    ai_available = ai;
-    masterlist = &ClientList;
-    currentplayers->clear();
+    input_length = 1;
+    ai_available = AI_Available;
+    if(!client_list) {client_list = &ClientList;}
+    current_players->clear(); // this might also need to be inline, not sure
   }
 
   Player* Player_Select::Add_Player(Player newPlayer)
   {
-    masterlist->push_back(newPlayer);
-    return &masterlist->back();
+    client_list->push_back(newPlayer);
+    return &client_list->back();
   }
 
   void Player_Select::Generate_List(void)
   {
     Options.push_back(New_Player()); // Sets New Player as an option 
 
-    for(int i = 0; i < masterlist->size(); i++)
+    for(int i = 0; i < client_list->size(); i++)
     {
-      if(!(!ai_available && (*masterlist)[i].CPU)) //skip if user is ai and game does not support
+      if(!(!ai_available && (*client_list)[i].CPU)) //skip if user is ai and game does not support
       {
-        for(int j = 0; j < currentplayers->size(); j++)
+        for(int j = 0; j < current_players->size(); j++)
         {
-          if((*currentplayers)[j]->name == (*masterlist)[i].name){break;} //if player name is already active
+          if((*current_players)[j]->name == (*client_list)[i].name){break;} //if player name is already active
           if(j >= Options.size() - 1) //if end of list is reached
           {
-            Options.push_back((*masterlist)[i]);
+            Options.push_back((*client_list)[i]);
           }
         }
       }
     }
   }
 
-  BaseDialog::BaseDialog(Player_Select& PlayerSelect)
+  BaseDialog::BaseDialog(bool AI_Available , std::vector<Player>& Client_List)
   {
-    playerselect = &PlayerSelect;
+    if(!player_select) {player_select = new Player_Select(AI_Available, Client_List);}
 
     newPlayer_Name = "";
     newPlayer_Ai = "";
@@ -233,14 +242,14 @@ namespace Game
 
   void BaseDialog::Select_Players(int num_players)
   {
-    while(currentplayers->size() < num_players)
+    while(current_players->size() < num_players)
     {
-      Player* player = playerselect->Select().On_Select(); 
+      Player* player = player_select->Select().On_Select(); 
       if(!player->selection)
       {
         Player_Setup();
       }
-      currentplayers->push_back(player);
+      current_players->push_back(player);
     }
   }
 
@@ -255,6 +264,6 @@ namespace Game
     Prompt(this->newPlayer_Ai.size(), this->newPlayer_Ai);
     PlayerAI = YesNo->Select().On_Select();
 
-    return playerselect->Add_Player(Player(PlayerName, PlayerAI));
+    return player_select->Add_Player(Player(PlayerName, PlayerAI));
   }
 }

@@ -5,8 +5,8 @@ namespace Dialog
   template <class T>
   Option<T>::Option(T Selection, std::string Name, std::string Required_Input)
   {
-    name = Name;
-    required_input = Required_Input;
+    if(name.empty()) {name = Name;}
+    if(required_input.empty()) {required_input = Required_Input;}
     selection = Selection;
   }
 
@@ -20,6 +20,12 @@ namespace Dialog
   T Option<T>::On_Select()
   {
     return selection;
+  }
+
+  template <class T>
+  Option_Select<T>::Option_Select<T>(int Input_Length)
+  {
+    if(!input_length) {input_length = Input_Length};
   }
 
   template <class T>
@@ -151,9 +157,11 @@ namespace Dialog
     Options.push_back(Option(true, "No", "n"));
   }
 
-  YesNo_Select::YesNo_Select()
+  YesNo_Select::YesNo_Select() : Option_Select(input_length)
   {
     input_length = 1;
+    user_input = "";
+    Options.clear();
     Generate_List(); // likely remove this
   }
 

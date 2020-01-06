@@ -14,18 +14,16 @@ namespace Game
 
   struct Locations
   {
-    public: // Silly because structs by default are public
-      const static Location Undo = 1000,
-                            Redo = 1001;
-      virtual ~Locations() = 0;
-      //Should all games be forced to include Header components?
+    virtual ~Locations() = 0;
+    const static Location Undo = 1000,
+                          Redo = 1001;
+    //Should all games be forced to include Header components?
   };
 
   struct Pieces
   {
-    public: //Silly because structs by default are public
-      const static Piece Blank = 0;
-      virtual ~Pieces() = 0;
+    virtual ~Pieces() = 0;
+    const static Piece Blank = 0;
   };
 
   class Move : public Dialog::Option<Game::Move*>
@@ -35,8 +33,8 @@ namespace Game
       // std::string name,
       //             required_input;
       // bool Conditional(void);
-      Move* On_Select(void);
-      Move* selection; 
+      // Move* On_Select(void);
+      // Move* selection; 
       Location square;
       Piece piece;
   };
@@ -44,10 +42,11 @@ namespace Game
   class Move_Select : public Dialog::Option_Select<Game::Move>
   {
     public:
+      Move_Select(int Input_Length);
       virtual Move Select(void); 
     protected:
-      // int Input_Length;
-      // std::string User_Input;
+      // int input_length;
+      // std::string user_input;
       // std::vector<Move> Options;
       virtual void Print_List(void); // intentionally does nothing
       // virtual std::string Generate_Option_String(Move* option); 
@@ -60,16 +59,16 @@ namespace Game
   class GameState
   {
     public:
-      GameState(const Pieces &Pieces, const Locations &Locations, size_t BoardSize, bool ai);
+      GameState(Pieces &Pieces, Locations &Locations, size_t BoardSize, bool Active_AI);
       int turn_number;
-      bool Active_AI; // If a current player is AI THIS SHOULD LIKELY BE CONST
+      bool active_ai; // If a current player is AI THIS SHOULD LIKELY BE CONST
       virtual std::vector<Move> Update(Move& move); // Updates Gamestate
       virtual bool Round_Won(void) = 0; // Checks if Round is won
       virtual bool Round_Tie(void) = 0; // Checks if the Round results in a tie
       virtual void Reset(void) = 0; // Resets gamestate
     protected:
-      const Locations* locations;
-      const Pieces* pieces;
+      Locations* locations = NULL;
+      Pieces* pieces = NULL;
 
       virtual void Setup_Board(void); // By default does nothing
       virtual std::vector<Move> Undo(void);
@@ -86,7 +85,7 @@ namespace Game
       AI(GameState& Gamestate); // Need to pass in the proper gamestate
       virtual Move Turn(void) = 0; 
     protected:
-      GameState* gamestate; // For AI to reference the current gamestate
+      GameState* gamestate; // For AI to reference the current gamestate, this may need to be a pointer
       virtual Move Either(Move& a, Move& b); // Need to implement
       virtual Move Open_Space(void); // Need to implement
   };
@@ -94,20 +93,20 @@ namespace Game
   class PlaySpace 
   {  
     public:
-      PlaySpace(const Pieces &Pieces, const Locations &Locations);
-      const Pieces* pieces;
-      const Locations* locations;
+      PlaySpace(Pieces &Pieces, Locations &Locations, int Display_Width, int Display_Height); // Might not need w/h
+      Pieces* pieces = NULL;
+      Locations* locations = NULL;
       void Setup_Display(void); // Writes Header and Board and then Prints Playspace
       virtual void Print_PlaySpace(void);
       virtual void New_Game(void) = 0; //This might not need to exist?
       virtual void Write_UndoRedo(bool un, bool re); //Writes or clears undo redo instructions
       virtual void Write_Piece(Piece piece, Location location) = 0; // Could make this abstract enough to not be pure virtual
     protected:
-      std::string display,
-                  redo,
-                  undo,
-                  removeUndoRedo;
-      size_t height, width;
+      std::string display = "",
+                  redo = "",
+                  undo = "",
+                  removeUndoRedo = "";
+      size_t height = 0, width = 0;
       
 
       virtual void Write_Header(void) = 0;
@@ -121,10 +120,10 @@ namespace Game
   class Turn_Dialog : public Dialog::Base
   {
     public:
-      Turn_Dialog(Move_Select &move_select);
-      Move_Select* select;    
-      std::string move_prompt,
-                  invalid;
+      Turn_Dialog();
+      Move_Select* select = NULL; // Would like to find a way for this to exist fully on the stack    
+      std::string move_prompt = "",
+                  invalid = "";
 
     //  virtual void Prompt(size_t width, std::string str);
     //  YesNo_Select* YesNo;
@@ -136,13 +135,11 @@ namespace Game
   class Turn
   {
     public:
-      Turn(AI& AI, Turn_Dialog& Dialog); // Needs to be written 
-      AI* ai;
-      Turn_Dialog* dialog;
+      Turn(std::vector<Game::Player>& Client_List);
+      AI* ai = NULL;
+      Turn_Dialog* dialog = NULL;
       virtual Move AI(void);
       virtual Move Player(void);
-    private:
-      Turn(); // B A N N E D
   };
 
   class Player : public Dialog::Option<Player*>
@@ -151,7 +148,7 @@ namespace Game
       Player(std::string Name, bool ai);
       // std::string Name,
       //             Required_Input;
-      // bool Conditional(void);
+      bool Conditional(void);
       // Player* On_Select(void);
       // Player* selection;
       int score;
@@ -177,16 +174,16 @@ namespace Game
   class Player_Select : Dialog::Option_Select<Player> 
   {
     public:
-      Player_Select(bool ai, std::vector<Player>& ClientList);
-      Player Select();
+      Player_Select(bool AI_Available, std::vector<Player>& ClientList);
+      Player Select(void);
       virtual Player* Add_Player(Player newPlayer);
     protected:
       bool ai_available; // AI available for current game
       // int Input_Length;
       // std::string User_Input;
       // std::vector<Move> Options;
-      std::vector<Player>* masterlist; // This just needs to be a pointer to client list
-      std::vector<Player*>* currentplayers;
+      std::vector<Player>* client_list = NULL; // This just needs to be a pointer to client list
+      std::vector<Player*>* current_players = NULL;
 
       // void Print_List(void); 
       // std::string Generate_Option_String(Player* option); 
@@ -200,15 +197,15 @@ namespace Game
   class BaseDialog : protected Dialog::Base 
   {
     public:
-      BaseDialog(Player_Select& PlayerSelect);  
-      Player_Select* playerselect;
-      std::vector<Player>* masterlist;
-      std::vector<Player*>* currentplayers;
-      std::string newPlayer_Name,
-                  newPlayer_Ai,
-                  Play_Again,
-                  Round_Winner,
-                  Round_Tie;
+      BaseDialog(bool AI_Available, std::vector<Player>& Client_List);
+      Player_Select* player_select = NULL;
+      std::vector<Player>* master_list = NULL;
+      std::vector<Player*>* current_players = NULL;
+      std::string newPlayer_Name = "",
+                  newPlayer_Ai = "",
+                  Play_Again = "",
+                  Round_Winner = "",
+                  Round_Tie = "";
 
       virtual void Select_Players(int num_players);
       Player* Player_Setup(void); //calls the player constructor returnin a new player object

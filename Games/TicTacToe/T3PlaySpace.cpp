@@ -2,15 +2,15 @@
 
 namespace TicTacToe
 {
-  TTT_PlaySpace::TTT_PlaySpace(const Game::Pieces &Pieces, const Game::Locations &Locations) : Game::PlaySpace(Pieces, Locations)
+  TTT_PlaySpace::TTT_PlaySpace(Game::Pieces &Pieces, Game::Locations &Locations) : Game::PlaySpace(Pieces, Locations, height, width)
   {
   //Dimensions of PlaySpace
     height = 15;
     width = 33;
 
   //Asset Assignment
-    //locations = 
-    //pieces = 
+    locations = &Locations;
+    pieces = &Pieces;
   //Visual Asset Assignment
     //Need access to Current Players
     Player1Score = "Score: ";
@@ -30,11 +30,17 @@ namespace TicTacToe
 
   void TTT_PlaySpace::Write_Piece(const int location, const int piece)
   {
-    switch(piece)
+    if(piece == pieces->Blank)
     {
-      case pieces->Blank: Write_Blank(location);
-      case pieces->Circle: Write_Circle(location);
-      case pieces->Cross: Write_Cross(location);
+      Write_Blank(location);
+    }
+    else if(piece == pieces->Cross)
+    {
+      Write_Cross(location);
+    }
+    else
+    {
+      Write_Circle(location);
     }
   }
 
@@ -65,7 +71,7 @@ namespace TicTacToe
   }
   
   size_t TTT_PlaySpace::Get_Coordinate(const int location)
-  {
+  {/*
     switch(location)
     {
       case locations->Square_One: return (3 * width) + 12 - 1;
@@ -86,7 +92,7 @@ namespace TicTacToe
       //case Header_Name2: return 27 - (name2.length() / 2) - 1;
       //case Header_Score1: return (4 - Player1Score.length() / 2) + width - 1;
       //case Header_Score2: return (27 - Player2Score.length() / 2) + width - 1;
-    }
+    }*/
   }
 
   void TTT_PlaySpace::Setup_Circle(void)
